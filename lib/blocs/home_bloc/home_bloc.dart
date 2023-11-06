@@ -1,0 +1,34 @@
+import 'dart:async';
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:propertify/repositories/property_repo/property_repo.dart';
+import '../../models/property_model.dart';
+part 'home_event.dart';
+part 'home_state.dart';
+
+class HomeBloc extends Bloc<HomeEvent, HomeState> {
+
+  
+  HomeBloc() : super(HomeInitial()) {
+    on<getAllProperties>(homeGetAllPropertiesEvent);
+  }
+
+  FutureOr<void> homeGetAllPropertiesEvent(
+      event,emit) async {
+    emit(HomeLoadingState());
+    await Future.delayed(Duration(seconds: 1));
+    final either = await PropertyRepo().getAllProperties();
+
+    either.fold((error) => {}, (response) {
+      if (response['status'] == 'success') {
+        final List rawData = response['properties'];
+        final List<PropertyModel> properties =
+            rawData.map((e) => PropertyModel.fromJson(e)).toList();
+        emit(HomeLoadedSuccessState(properties: properties));
+      } else {
+        print('Failed to get properties');
+        emit(HomeLoadedFailedState());
+      }
+    });
+  }
+}
