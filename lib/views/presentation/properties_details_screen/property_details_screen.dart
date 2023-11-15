@@ -7,9 +7,8 @@ import 'package:propertify/constants/spaces%20&%20paddings/spaces.dart';
 import 'package:propertify/constants/text_styles/text_styles.dart';
 import 'package:propertify/data/shared_preferences/shared_preferences.dart';
 import 'package:propertify/models/request_sending_model.dart';
-import 'package:propertify/models/user_model.dart';
 import 'package:propertify/resources/components/custom_toast.dart';
-import 'package:propertify/views/presentation/splash_screen/splash_screen.dart';
+import 'package:propertify/views/coming_soon/coming_soon.dart';
 import 'package:propertify/widgets/buttons/custombuttons.dart';
 import 'package:propertify/widgets/iconbox/customIconBox.dart';
 import 'package:propertify/widgets/input_fileds/customInputFields.dart';
@@ -49,8 +48,8 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future<UserModel> user = getUserData();
-    print(user);
+    // Future<UserModel> user = getUserData();
+  
     return Scaffold(
       body: Column(
         children: [
@@ -309,7 +308,9 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                                 boxColor: Colors.grey.shade200,
                                 iconSize: 24,
                                 IconColor: AppColors.secondaryColor,
-                                iconFunction: () {},
+                                iconFunction: () {
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ComingSoon(),));
+                                },
                               )
                             ],
                           ),

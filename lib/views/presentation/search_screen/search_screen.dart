@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:propertify/blocs/home_bloc/home_bloc.dart';
 import 'package:propertify/blocs/search_bloc/search_bloc.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/spaces.dart';

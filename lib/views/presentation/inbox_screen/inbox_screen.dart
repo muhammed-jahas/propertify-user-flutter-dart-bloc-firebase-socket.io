@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:propertify/views/presentation/chat_screen/chat_single_screen.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/spaces.dart';
 import 'package:propertify/constants/text_styles/text_styles.dart';

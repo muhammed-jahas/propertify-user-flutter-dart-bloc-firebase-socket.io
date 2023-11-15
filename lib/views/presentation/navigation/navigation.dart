@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:propertify/constants/icons/propertify_icons.dart';
+import 'package:propertify/views/coming_soon/coming_soon.dart';
 import 'package:propertify/views/presentation/home_screen/home_screen.dart';
-import 'package:propertify/views/presentation/inbox_screen/inbox_screen.dart';
 import 'package:propertify/constants/colors/colors.dart';
 import 'package:propertify/views/presentation/profile_screen/profile_screen.dart';
-import 'package:propertify/views/presentation/saved_screen/saved_screen.dart';
 import 'package:propertify/views/presentation/search_screen/search_screen.dart';
 
 class NavigationItems extends StatefulWidget {
@@ -19,13 +18,16 @@ class _NavigationItemsState extends State<NavigationItems> {
   final List<Widget> _screens = [
     HomeScreen(),
     SearchScreen(),
-    SavedScreen(),
-    InboxScreen(),
+    ComingSoon(),
+    
+    // InboxScreen(),
+    ComingSoon(),
     ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
+      
     return Scaffold(
       body: _screens[_currentIndex],
       bottomNavigationBar: Container(
@@ -56,7 +58,8 @@ class _NavigationItemsState extends State<NavigationItems> {
               BottomNavigationBarItem(
                 activeIcon: Padding(
                   padding: EdgeInsets.only(bottom: 2),
-                  child: Icon(PropertifyIcons.home, color: AppColors.secondaryColor),
+                  child: Icon(PropertifyIcons.home,
+                      color: AppColors.secondaryColor),
                 ),
                 icon: Padding(
                   padding: EdgeInsets.only(bottom: 2),
@@ -67,7 +70,8 @@ class _NavigationItemsState extends State<NavigationItems> {
               BottomNavigationBarItem(
                 activeIcon: Padding(
                   padding: EdgeInsets.only(bottom: 2),
-                  child: Icon(PropertifyIcons.search, color: AppColors.secondaryColor),
+                  child: Icon(PropertifyIcons.search,
+                      color: AppColors.secondaryColor),
                 ),
                 icon: Padding(
                   padding: EdgeInsets.only(bottom: 2),
@@ -78,18 +82,8 @@ class _NavigationItemsState extends State<NavigationItems> {
               BottomNavigationBarItem(
                 activeIcon: Padding(
                   padding: EdgeInsets.only(bottom: 2),
-                  child: Icon(PropertifyIcons.save, color: AppColors.secondaryColor),
-                ),
-                icon: Padding(
-                  padding: EdgeInsets.only(bottom: 2),
-                  child: Icon(PropertifyIcons.save),
-                ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                activeIcon: Padding(
-                  padding: EdgeInsets.only(bottom: 2),
-                  child: Icon(PropertifyIcons.chat, color: AppColors.secondaryColor),
+                  child: Icon(PropertifyIcons.chat,
+                      color: AppColors.secondaryColor),
                 ),
                 icon: Padding(
                   padding: EdgeInsets.only(bottom: 2),
@@ -100,7 +94,20 @@ class _NavigationItemsState extends State<NavigationItems> {
               BottomNavigationBarItem(
                 activeIcon: Padding(
                   padding: EdgeInsets.only(bottom: 2),
-                  child: Icon(PropertifyIcons.user, color: AppColors.secondaryColor),
+                  child: Icon(PropertifyIcons.recent,
+                      color: AppColors.secondaryColor),
+                ),
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 2),
+                  child: Icon(PropertifyIcons.recent),
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                activeIcon: Padding(
+                  padding: EdgeInsets.only(bottom: 2),
+                  child: Icon(PropertifyIcons.user,
+                      color: AppColors.secondaryColor),
                 ),
                 icon: Padding(
                   padding: EdgeInsets.only(bottom: 2),

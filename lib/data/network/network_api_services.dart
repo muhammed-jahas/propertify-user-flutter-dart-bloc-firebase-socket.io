@@ -40,7 +40,7 @@ class ApiServices {
     try {
       final response = await http.get(url);
       fetchedData = getResponse(response);
-
+      print('111');
     } on SocketException {
       return Left(InternetException());
     } on http.ClientException {

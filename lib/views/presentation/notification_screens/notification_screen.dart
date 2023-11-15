@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:propertify/blocs/home_bloc/home_bloc.dart';
 import 'package:propertify/blocs/payment_bloc/payment_bloc.dart';
 import 'package:propertify/constants/colors/colors.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/spaces.dart';
 import 'package:propertify/constants/text_styles/text_styles.dart';
+import 'package:propertify/models/agent_model.dart';
+import 'package:propertify/models/property_model.dart';
 import 'package:propertify/models/request_recieving_model.dart';
+import 'package:propertify/views/presentation/notification_screens/notification_single_screen.dart';
 
 class NotificationScreen extends StatefulWidget {
   NotificationScreen({super.key});
@@ -25,7 +27,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primaryColor.shade50,
+      backgroundColor: Colors.grey.shade200,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,28 +48,32 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   builder: (context, state) {
                     if (state is PaymentRequestsLoadingState) {
                       return Center(
-                        child: CircularProgressIndicator(
-
-                        ),
+                        child: CircularProgressIndicator(),
                       );
                     } else if (state is PaymentRequestsLoadedSuccessState) {
-                      return Container(
-                        child: ListView.separated(
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            print('In ListView Builder');
-                            RequestRecievingModel paymentrequest =
-                                state.paymentRequests[index];
-            
-                            return NotificationWidget(
-                                paymentrequest: paymentrequest);
-                          },
-                          separatorBuilder: (context, index) {
-                            return customSpaces.verticalspace20;
-                          },
-                          itemCount: state.paymentRequests.length,
-                        ),
-                      );
+                      if (state.paymentRequests.isEmpty) {
+                        return Container(
+                          child: Text('No Paynment Requests'),
+                        );
+                      }else {
+                        return Container(
+                              child: ListView.separated(
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  print('In ListView Builder');
+                                  RequestRecievingModel paymentrequest =
+                                      state.paymentRequests[index];
+
+                                  return NotificationWidget(
+                                      paymentrequest: paymentrequest);
+                                },
+                                separatorBuilder: (context, index) {
+                                  return customSpaces.verticalspace20;
+                                },
+                                itemCount: state.paymentRequests.length,
+                              ),
+                            );
+                      }
                     }
                     return SizedBox(
                       child: Text('Something went wrong'),
@@ -83,11 +89,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   fetchRequests() async {
-    context.read<PaymentRequestsBloc>().add(getAllPaymentRequestsEvent()); // Dispatch the event to fetch data
+    context
+        .read<PaymentRequestsBloc>()
+        .add(getAllPaymentRequestsEvent()); // Dispatch the event to fetch data
   }
 }
-
-
 
 class NotificationWidget extends StatelessWidget {
   final RequestRecievingModel paymentrequest;
@@ -97,10 +103,13 @@ class NotificationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // Extract the first letter of the agent's name
     String firstLetter = paymentrequest.agent?.name?[0].toUpperCase() ?? '';
-
+    PropertyModel property = paymentrequest.property!;
+    AgentModel agent = paymentrequest.agent!;
     return InkWell(
       onTap: () {
         // Get.to(() => NotificationSingleScreen(request: request));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationSingleScreen(property: property,agent: agent,paymentrequest: paymentrequest),));
+        print(paymentrequest.toJson());
       },
       child: Container(
         decoration: BoxDecoration(

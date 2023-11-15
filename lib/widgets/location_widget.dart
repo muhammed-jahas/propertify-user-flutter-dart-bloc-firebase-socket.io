@@ -22,12 +22,13 @@ class locationWidget extends StatelessWidget {
                 children: [
                   Text(
                     'Location',
-                    style: AppFonts.WhiteColorText14,
+                    style: AppFonts.SecondaryColorText14,
+                    
                   ),
                   customSpaces.horizontalspace5,
                   Icon(
                     Icons.keyboard_arrow_down_outlined,
-                    color: Colors.white,
+                    color: AppColors.secondaryColor,
                     size: 16,
                   )
                 ],
@@ -46,13 +47,13 @@ class locationWidget extends StatelessWidget {
                 children: [
                   Icon(
                     PropertifyIcons.location,
-                    color: AppColors.whiteColor,
+                    color: AppColors.secondaryColor,
                     size: 22,
                   ),
                   customSpaces.horizontalspace5,
                   Text(
                     'Malappuram',
-                    style: AppFonts.WhiteColorText16,
+                    style: AppFonts.SecondaryColorText16,
                   ),
                 ],
               ),

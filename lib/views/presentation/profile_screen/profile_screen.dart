@@ -6,7 +6,11 @@ import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/spaces.dart';
 import 'package:propertify/constants/text_styles/text_styles.dart';
 import 'package:propertify/data/shared_preferences/shared_preferences.dart';
-import 'package:propertify/views/presentation/settings_screen/settings_screen.dart';
+import 'package:propertify/views/presentation/profile_screen/app_info.dart';
+import 'package:propertify/views/presentation/profile_screen/help_.dart';
+import 'package:propertify/views/presentation/profile_screen/privacy&policy.dart';
+import 'package:propertify/views/presentation/profile_screen/terms&conditions.dart';
+import 'package:propertify/views/presentation/welcome_screen/welcome_screen.dart';
 
 import '../../../blocs/login_bloc/login_bloc.dart';
 
@@ -19,6 +23,8 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   String? userPhone;
+  String? userEmail;
+  String? userName;
 
   @override
   void initState() {
@@ -29,6 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     fetchuserData();
+    // ignore: unused_local_variable
     final loginBloc = BlocProvider.of<LoginBloc>(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -52,17 +59,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: customPaddings.horizontalpadding20,
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              CircleAvatar(radius: 50),
+              CircleAvatar(
+                radius: 50,
+                child: Text(
+                  userName != null && userName!.isNotEmpty
+                      ? userName![0].toUpperCase()
+                      : 'N/A',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
               customSpaces.verticalspace20,
               Text(
-                userPhone ?? 'N\A',
+                userName ?? 'N\A',
                 style: AppFonts.SecondaryColorText20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'davidjames@gmail.com',
+                    userEmail ?? 'N\A',
                     style: AppFonts.greyText14,
                   ),
                   Text(
@@ -75,31 +93,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           customSpaces.verticalspace20,
           Divider(),
+          // Padding(
+          //   padding: customPaddings.horizontalpadding20,
+          //   child: ListTile(
+          //     onTap: () {
+          //       Navigator.of(context).push(MaterialPageRoute(
+          //         builder: (context) => SettingsScreen(),
+          //       ));
+          //     },
+          //     contentPadding: EdgeInsets.all(0),
+          //     leading: Text(
+          //       'Settings',
+          //       style: AppFonts.SecondaryColorText20,
+          //     ),
+          //     trailing: Icon(
+          //       PropertifyIcons.settings,
+          //       color: AppColors.secondaryColor,
+          //     ),
+          //   ),
+          // ),
           Padding(
             padding: customPaddings.horizontalpadding20,
             child: ListTile(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SettingsScreen(),
-                ));
-              },
-              contentPadding: EdgeInsets.all(0),
-              leading: Text(
-                'Settings',
-                style: AppFonts.SecondaryColorText20,
-              ),
-              trailing: Icon(
-                PropertifyIcons.settings,
-                color: AppColors.secondaryColor,
-              ),
-            ),
-          ),
-          Padding(
-            padding: customPaddings.horizontalpadding20,
-            child: ListTile(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SettingsScreen(),
+                  builder: (context) => AppInfo(),
                 ));
               },
               contentPadding: EdgeInsets.all(0),
@@ -113,13 +131,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          Divider(),
+
           Padding(
             padding: customPaddings.horizontalpadding20,
             child: ListTile(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SettingsScreen(),
+                  builder: (context) => TermsConditions(),
                 ));
               },
               contentPadding: EdgeInsets.all(0),
@@ -138,7 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: ListTile(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SettingsScreen(),
+                  builder: (context) => PrivacyPolicy(),
                 ));
               },
               contentPadding: EdgeInsets.all(0),
@@ -157,7 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: ListTile(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SettingsScreen(),
+                  builder: (context) => HelpScreen(),
                 ));
               },
               contentPadding: EdgeInsets.all(0),
@@ -172,6 +190,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           Divider(),
+          // Padding(
+          //   padding: customPaddings.horizontalpadding20,
+          //   child: ListTile(
+          //     onTap: () {
+          //       Navigator.of(context).push(MaterialPageRoute(
+          //         builder: (context) => SettingsScreen(),
+          //       ));
+          //     },
+          //     contentPadding: EdgeInsets.all(0),
+          //     leading: Text(
+          //       'Clear App Data',
+          //       style: AppFonts.SecondaryColorText20,
+          //     ),
+          //     trailing: Icon(
+          //       PropertifyIcons.help,
+          //       color: AppColors.secondaryColor,
+          //     ),
+          //   ),
+          // ),
+          Padding(
+            padding: customPaddings.horizontalpadding20,
+            child: ListTile(
+              onTap: () async {
+                await signOutUser();
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                  builder: (context) => WelcomeScreen(),
+                ),
+                (route) => false,
+                );
+              },
+              contentPadding: EdgeInsets.all(0),
+              leading: Text(
+                'Sign Out',
+                style: AppFonts.RedColorText20,
+              ),
+              trailing: Icon(
+                PropertifyIcons.logout,
+                color: AppColors.alertColor,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -184,5 +243,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
         userPhone = userPhonefetched;
       });
     }
+
+    final userEmailfetched = await SharedPref.instance.getUserEmail();
+    if (userEmailfetched != null) {
+      setState(() {
+        userEmail = userEmailfetched;
+      });
+    }
+    final userNamefetched = await SharedPref.instance.getUserName();
+    if (userNamefetched != null) {
+      setState(() {
+        userName = userNamefetched;
+      });
+    }
+  }
+
+  signOutUser() async {
+    await SharedPref.instance.sharedPref.remove(SharedPref.userPhone);
   }
 }

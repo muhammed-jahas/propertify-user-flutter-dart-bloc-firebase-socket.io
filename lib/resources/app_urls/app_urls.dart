@@ -1,7 +1,7 @@
 class Appurls {
 
   //Base Url
-  static const String baseUrl = 'http://192.168.85.221:3000';
+  static const String baseUrl = 'http://10.4.4.133:3000';
 
   //User Login
   static const String userLogin = '$baseUrl/api/user/loginUser';

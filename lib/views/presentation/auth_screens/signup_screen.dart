@@ -169,6 +169,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             final phoneNumber = '+91'+phoneNumberController.text;
                             final userName = userNameController.text;
                             final password = passwordController.text;
+                            // ignore: unused_local_variable
                             final confirmPassword =
                                 confirmPasswordController.text;
                             final userEmail = userEmailController.text;

@@ -1,9 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:propertify/blocs/login_bloc/login_bloc.dart';
-import 'package:propertify/data/shared_preferences/shared_preferences.dart';
-import 'package:propertify/models/user_model.dart';
 import 'package:propertify/views/presentation/navigation/navigation.dart';
 import 'package:propertify/constants/colors/colors.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
@@ -13,7 +10,6 @@ import 'package:propertify/widgets/buttons/custombuttons.dart';
 import 'package:propertify/widgets/iconbox/customIconBox.dart';
 import 'package:propertify/widgets/input_fileds/customInputFields.dart';
 import 'package:propertify/widgets/text_models/customSpanTextModels.dart';
-import '../../../repositories/login_repo/login_repo.dart';
 
 class OtpVerification extends StatefulWidget {
  final LoginBloc loginBloc;

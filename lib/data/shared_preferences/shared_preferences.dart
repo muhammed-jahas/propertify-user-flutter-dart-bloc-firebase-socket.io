@@ -22,6 +22,17 @@ class SharedPref {
     final user = await sharedPref.getString(userPhone);
     return user;
   }
+  //Get User Email
+  Future<String?> getUserEmail() async {
+    final useremail = await sharedPref.getString(userEmail);
+    return useremail;
+  }
+
+  //Get User Email
+  Future<String?> getUserName() async {
+    final username = await sharedPref.getString(userName);
+    return username;
+  }
 
   // SharedPref class
   Future<String?> getUserId() async {

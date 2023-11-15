@@ -32,6 +32,7 @@ class RequestRecievingModel {
       'paymentAmount': paymentAmount,
     };
 
+    // ignore: unnecessary_null_comparison
     if (id != null) {
       data['_id'] = id;
     }

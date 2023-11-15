@@ -1,8 +1,5 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:http/http.dart';
-import 'package:meta/meta.dart';
-
 import '../../models/request_sending_model.dart';
 import '../../repositories/property_repo/property_repo.dart';
 
@@ -28,7 +25,6 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
                 }
               else
                 {emit(RequestErrorState(message: response['message']))}
-                
             });
     await Future.delayed(Duration(seconds: 2));
     emit(PropertyInitial());

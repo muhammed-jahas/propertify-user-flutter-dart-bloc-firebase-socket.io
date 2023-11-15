@@ -7,18 +7,21 @@ import 'package:propertify/constants/text_styles/text_styles.dart';
 import 'package:propertify/models/property_model.dart';
 import 'package:propertify/widgets/card_widgets/propertyCards/home_page_single_card.dart';
 
-class SavedScreen extends StatefulWidget {
-  SavedScreen({super.key});
+// ignore: must_be_immutable
+class CategoriesScreen extends StatefulWidget {
+  String? category;
+  CategoriesScreen({super.key, this.category});
 
   @override
-  State<SavedScreen> createState() => _SavedScreenState();
+  State<CategoriesScreen> createState() => _CategoriesScreenState();
 }
 
-class _SavedScreenState extends State<SavedScreen> {
-  String selectedCategory = 'All'; // Default to show all categories
+class _CategoriesScreenState extends State<CategoriesScreen> {
+  String? selectedCategory; // Default to show all categories
 
   void initState() {
     super.initState();
+    selectedCategory = widget.category ?? 'All';
     _fetchAllProperties();
   }
 
@@ -37,26 +40,39 @@ class _SavedScreenState extends State<SavedScreen> {
             Padding(
               padding: customPaddings.horizontalpadding20,
               child: Text(
-                "Favourites",
+                "All Properties",
                 style: AppFonts.SecondaryColorText28,
               ),
             ),
             customSpaces.verticalspace20,
-            DropdownButton<String>(
-              value: selectedCategory,
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedCategory = newValue!;
-                });
-              },
-              items: ['All', 'House', 'Apartment', 'Office', 'Other']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+            Padding(
+              padding: customPaddings.horizontalpadding20,
+              child: Container(
+                padding: customPaddings.horizontalpadding20,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: DropdownButton<String>(
+                  underline: Container(),
+                  isExpanded: true,
+                  value: selectedCategory,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedCategory = newValue!;
+                    });
+                  },
+                  items: ['All', 'House', 'Apartment', 'Office', 'Other']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
             ),
+            customSpaces.verticalspace20,
             Expanded(
               child: Padding(
                 padding: customPaddings.horizontalpadding20,
@@ -75,7 +91,11 @@ class _SavedScreenState extends State<SavedScreen> {
                                       property.propertyCategory ==
                                       selectedCategory)
                                   .toList();
-
+                      if (filteredProperties.isEmpty) {
+                        return Center(
+                          child: Text('No Properties', style: AppFonts.SecondaryColorText14,),
+                        );
+                      }
                       return Container(
                         child: GridView.builder(
                           physics: NeverScrollableScrollPhysics(),
@@ -88,8 +108,7 @@ class _SavedScreenState extends State<SavedScreen> {
                             childAspectRatio: 1 / 1,
                           ),
                           itemBuilder: (context, index) {
-                            PropertyModel property =
-                                filteredProperties[index];
+                            PropertyModel property = filteredProperties[index];
                             return HomePageCardSingle(
                               cardWidth: 210,
                               property: property,

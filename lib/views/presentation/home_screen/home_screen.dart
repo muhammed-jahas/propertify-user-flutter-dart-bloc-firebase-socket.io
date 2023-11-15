@@ -2,15 +2,16 @@ import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:propertify/constants/icons/propertify_icons.dart';
+import 'package:propertify/views/categories%20screen/categories_screen.dart';
 import 'package:propertify/views/presentation/notification_screens/notification_screen.dart';
 import 'package:propertify/constants/colors/colors.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/spaces.dart';
 import 'package:propertify/constants/text_styles/text_styles.dart';
+import 'package:propertify/views/presentation/saved_screen/saved_screen.dart';
 import 'package:propertify/views/presentation/search_screen/search_screen.dart';
 import 'package:propertify/widgets/buttons/custombuttons.dart';
 import 'package:propertify/widgets/card_widgets/propertyCards/home_page_card.dart';
-import 'package:propertify/widgets/card_widgets/propertyCards/home_page_single_card.dart';
 import 'package:propertify/widgets/iconbox/customIconBox.dart';
 import 'package:propertify/widgets/input_fileds/customInputFields.dart';
 import 'package:propertify/widgets/location_widget.dart';
@@ -34,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
           //AppBar
 
           Container(
-            color: AppColors.primaryColor,
+            // color: AppColors.primaryColor,
             child: Column(
               children: [
                 Padding(
@@ -57,34 +58,35 @@ class _HomeScreenState extends State<HomeScreen> {
                               boxIcon: Icons.refresh,
                               radius: 8,
                               boxColor: Colors.transparent,
-                              IconColor: AppColors.whiteColor,
+                              IconColor: AppColors.secondaryColor,
                               iconSize: 28,
                               iconFunction: () {
-                                context.read<HomeBloc>().add(getAllProperties());
+                                context
+                                    .read<HomeBloc>()
+                                    .add(getAllProperties());
                               },
                             ),
                             CustomIconBox(
                               boxheight: 40,
                               boxwidth: 40,
-                              boxIcon: PropertifyIcons.conditions,
+                              boxIcon: PropertifyIcons.save,
                               radius: 8,
                               boxColor: Colors.transparent,
-                              IconColor: AppColors.whiteColor,
-                              iconSize: 28,
+                              IconColor: AppColors.secondaryColor,
+                              iconSize: 24,
                               iconFunction: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => NotificationScreen(),
+                                  builder: (context) => SavedScreen(),
                                 ));
                               },
                             ),
-                            
                             CustomIconBox(
                               boxheight: 40,
                               boxwidth: 40,
                               boxIcon: Icons.notifications_none_outlined,
                               radius: 8,
                               boxColor: Colors.transparent,
-                              IconColor: AppColors.whiteColor,
+                              IconColor: AppColors.secondaryColor,
                               iconSize: 28,
                               iconFunction: () {
                                 Navigator.of(context).push(MaterialPageRoute(
@@ -100,53 +102,115 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Padding(
                   padding: customPaddings.horizontalpadding20,
-                  child: InkWell(
+                  child: CustomInputField(
                     onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchScreen(),));
-                  },
+                      print('Tapped on the non-editable field');
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SearchScreen(),
+                      ));
+                    },
+                    enabled: false,
+                    editable: true,
+                    bgColor: AppColors.whiteColor,
+                    borderColor: Colors.grey.shade300,
 
-                    child: CustomInputField(
-                      enabled: false,
-                      bgColor: AppColors.whiteColor,
-                      borderColor: Colors.transparent,
-                        // borderColor: Colors.white,
-                        fieldIcon: Icons.search,
-                        hintText: 'Serach for properties',
-                        // fillColor: AppColors.whiteColor,
-                        // borderColor: Colors.transparent
-                        ),
+                    // borderColor: Colors.white,
+                    fieldIcon: Icons.search,
+                    hintText: 'Serach for properties',
+                    // fillColor: AppColors.whiteColor,
+                    // borderColor: Colors.transparent
                   ),
                 ),
-                customSpaces.verticalspace20,
               ],
             ),
           ),
-          //Three Boxes
 
           customSpaces.verticalspace20,
           Padding(
             padding: customPaddings.horizontalpadding20,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
               children: [
-                Expanded(
-                  child: borderBoxIconandText(
-                      boxIcon: PropertifyIcons.categories,
-                      boxText: 'Categories'),
+                Row(
+                  children: [
+                    Expanded(
+                      child: categoryBox(
+                        cateoryname: 'House',
+                        imagePath: 'assets/images/categories/house.jpg',
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CategoriesScreen(category: 'House'),
+                          ));
+                        },
+                      ),
+                    ),
+                    customSpaces.horizontalspace10,
+                    Expanded(
+                      child: categoryBox(
+                          cateoryname: 'Apartment',
+                          imagePath: 'assets/images/categories/apartment.jpg',
+                          onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CategoriesScreen(category: 'Apartment'),
+                          ));
+                        },),
+                          
+                    ),
+                  ],
                 ),
-                customSpaces.horizontalspace10,
-                Expanded(
-                  child: borderBoxIconandText(
-                      boxIcon: PropertifyIcons.guides, boxText: 'Guides'),
-                ),
-                customSpaces.horizontalspace10,
-                Expanded(
-                  child: borderBoxIconandText(
-                      boxIcon: PropertifyIcons.recent, boxText: 'Recent'),
+                customSpaces.verticalspace10,
+                Row(
+                  children: [
+                    Expanded(
+                      child: categoryBox(
+                          cateoryname: 'Office',
+                          imagePath: 'assets/images/categories/office.jpg',
+                          onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CategoriesScreen(category: 'Office'),
+                          ));
+                        },),
+                    ),
+                    customSpaces.horizontalspace10,
+                    Expanded(
+                      child: categoryBox(
+                          cateoryname: 'Other',
+                          imagePath: 'assets/images/categories/other.jpg',
+                          onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CategoriesScreen(category: 'Other'),
+                          ));
+                        },),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
+          // customSpaces.verticalspace20,
+          //Three Boxes
+          // Padding(
+          //   padding: customPaddings.horizontalpadding20,
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Expanded(
+          //         child: borderBoxIconandText(
+          //             boxIcon: PropertifyIcons.categories,
+          //             boxText: 'Categories'),
+          //       ),
+          //       customSpaces.horizontalspace10,
+          //       Expanded(
+          //         child: borderBoxIconandText(
+          //             boxIcon: PropertifyIcons.guides, boxText: 'Guides'),
+          //       ),
+          //       customSpaces.horizontalspace10,
+          //       Expanded(
+          //         child: borderBoxIconandText(
+          //             boxIcon: PropertifyIcons.recent, boxText: 'Recent'),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           customSpaces.verticalspace20,
           Padding(
             padding: customPaddings.horizontalpadding20,
@@ -158,9 +222,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Recommendations',
                   style: AppFonts.SecondaryColorText18,
                 ),
-                Text(
-                  'See All',
-                  style: AppFonts.PrimaryColorText14,
+                InkWell(
+                  onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CategoriesScreen(),
+                          ));
+                        },
+                  child: Text(
+                    'See All',
+                    style: AppFonts.PrimaryColorText14,
+                  ),
                 ),
               ],
             ),
@@ -178,13 +249,13 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Nearby your location',
+                  'Offers For You',
                   style: AppFonts.SecondaryColorText18,
                 ),
-                Text(
-                  'See All',
-                  style: AppFonts.PrimaryColorText14,
-                ),
+                // Text(
+                //   'See All',
+                //   style: AppFonts.PrimaryColorText14,
+                // ),
               ],
             ),
           ),
@@ -202,19 +273,22 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           customSpaces.verticalspace20,
-          Padding(
-            padding: customPaddings.horizontalpadding20,
-            child: HomePageCard(),
-          ),
-          customSpaces.verticalspace20,
+          // Padding(
+          //   padding: customPaddings.horizontalpadding20,
+          //   child: HomePageCard(),
+          // ),
+          // customSpaces.verticalspace20,
         ]),
       ),
     );
   }
 
   void _showBottomSheet(BuildContext context) {
+    // ignore: unused_local_variable
     String selectedState;
+    // ignore: unused_local_variable
     String selectedStateCode;
+    // ignore: unused_local_variable
     String selectedDistrict;
 
     showModalBottomSheet(
@@ -262,6 +336,40 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         );
       },
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class categoryBox extends StatelessWidget {
+  String? cateoryname;
+  String? imagePath;
+  VoidCallback? onTap;
+
+  categoryBox({
+    Key? key,
+    this.cateoryname,
+    this.imagePath,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          image: DecorationImage(
+            image: AssetImage(imagePath ?? 'assets/images/banner-1.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+            child:
+                Text(cateoryname ?? '', style: AppFonts.WhiteColorText14Bold)),
+      ),
     );
   }
 }

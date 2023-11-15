@@ -8,9 +8,9 @@ import 'package:propertify/constants/colors/colors.dart';
 import 'package:propertify/data/shared_preferences/shared_preferences.dart';
 import 'package:propertify/views/presentation/splash_screen/splash_screen.dart';
 
-import 'blocs/home_bloc/home_bloc.dart';
-import 'blocs/login_bloc/login_bloc.dart';
-import 'blocs/property_bloc/property_bloc.dart';
+import 'package:propertify/blocs/home_bloc/home_bloc.dart';
+import 'package:propertify/blocs/login_bloc/login_bloc.dart';
+import 'package:propertify/blocs/property_bloc/property_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,21 +24,23 @@ class Propertify extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     // Detect the current brightness mode
     Brightness systemBrightness = MediaQuery.of(context).platformBrightness;
 
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: systemBrightness == Brightness.light
-            ? AppColors.primaryColor
-            : AppColors.primaryColor,
+        statusBarColor:
+            systemBrightness == Brightness.light ? Colors.white : Colors.black,
         statusBarIconBrightness: systemBrightness == Brightness.light
-            ? Brightness.light
+            ? Brightness.dark
             : Brightness.light,
         statusBarBrightness: systemBrightness,
-        systemNavigationBarColor: systemBrightness == Brightness.light
-            ? Colors.white
-            : Colors.black,
+        systemNavigationBarColor:
+            systemBrightness == Brightness.light ? Colors.white : Colors.black,
         systemNavigationBarIconBrightness: systemBrightness == Brightness.light
             ? Brightness.dark
             : Brightness.light,
@@ -48,7 +50,6 @@ class Propertify extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => LoginBloc()),
-        BlocProvider(create: (_) => PaymentRequestsBloc()),
         BlocProvider(create: (_) => HomeBloc()),
         BlocProvider(create: (_) => PropertyBloc()),
         BlocProvider(create: (_) => SearchBloc()),

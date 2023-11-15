@@ -18,6 +18,7 @@ class PropertyModel {
   String? latitude;
   List<String>? amenities;
   bool? isApproved;
+  bool? isSold;
   List<String>? tags; // Added tags field
 
   // Add this field for newly added gallery pictures
@@ -39,6 +40,7 @@ class PropertyModel {
     this.latitude,
     this.amenities,
     this.isApproved,
+    this.isSold,
     this.tags,
     this.newlyAddedGalleryPictures,
   });
@@ -62,6 +64,7 @@ class PropertyModel {
       latitude: json['latitude'],
       amenities: List<String>.from(json['amenities']),
       isApproved: json['isApproved'],
+      isSold: json['isSold'],
       tags: List<String>.from(json['tags']), // Added tags field
     );
   }
@@ -80,6 +83,7 @@ class PropertyModel {
       'latitude': latitude,
       'amenities': amenities,
       'isApproved': isApproved,
+      'isSold' : isSold,
       'tags': tags, // Added tags field
     };
 

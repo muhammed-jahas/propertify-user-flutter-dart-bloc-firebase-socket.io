@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:propertify/blocs/payment_bloc/payment_bloc.dart';
 import 'package:propertify/constants/colors/colors.dart';
-import 'package:propertify/models/user_model.dart';
 import 'package:propertify/views/presentation/navigation/navigation.dart';
 import 'package:propertify/views/presentation/welcome_screen/welcome_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,13 +19,16 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     validateUser();
-    getUserData();
+    // getUserData();
   }
 
   @override
   Widget build(BuildContext context) {
-    context.read<HomeBloc>().add(getAllProperties());
-    context.read<PaymentRequestsBloc>().add(getAllPaymentRequestsEvent());
+     //context.read<HomeBloc>().add(getAllProperties());
+    // context.read<PaymentRequestsBloc>().add(getAllPaymentRequestsEvent());
+    BlocProvider.of<HomeBloc>(context).add(getAllProperties());
+    BlocProvider.of<PaymentRequestsBloc>(context)
+        .add(getAllPaymentRequestsEvent());
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       body: Column(
@@ -51,10 +53,9 @@ class _SplashScreenState extends State<SplashScreen> {
     if (userPhone != null) {
       print('this is in splash: $userPhone');
       try {
-       
         await gotoDashboard(context);
       } catch (e) {
-        
+        await gotoDashboard(context);
       }
     } else {
       await gotoWelcome(context);
@@ -63,23 +64,21 @@ class _SplashScreenState extends State<SplashScreen> {
 
   gotoDashboard(BuildContext ctx) async {
     await Future.delayed(Duration(seconds: 2));
-    Navigator.of(ctx)
-        .pushReplacement(MaterialPageRoute(builder: (context) => NavigationItems()));
-    }
+    Navigator.of(ctx).pushReplacement(
+        MaterialPageRoute(builder: (context) => NavigationItems()));
+  }
 
   gotoWelcome(BuildContext ctx) async {
     await Future.delayed(Duration(seconds: 2));
-    Navigator.of(ctx)
-        .pushReplacement(MaterialPageRoute(builder: (context) => WelcomeScreen()));
-    }
-    
-     
-}
-Future<UserModel> getUserData() async {
-  final userPhone = await SharedPref.instance.getUser();
-  UserModel user = UserModel(
-    usermobNo: userPhone,
-  );
-  return user;
+    Navigator.of(ctx).pushReplacement(
+        MaterialPageRoute(builder: (context) => WelcomeScreen()));
+  }
 }
 
+// Future<UserModel> getUserData() async {
+//   final userPhone = await SharedPref.instance.getUser();
+//   UserModel user = UserModel(
+//     usermobNo: userPhone,
+//   );
+//   return user;
+// }

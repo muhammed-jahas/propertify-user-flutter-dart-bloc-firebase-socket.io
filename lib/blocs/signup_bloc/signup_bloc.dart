@@ -2,8 +2,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
-import 'package:propertify/blocs/login_bloc/login_bloc.dart';
 import 'package:propertify/models/user_model.dart';
 import 'package:propertify/repositories/signup_repo/signup_repo.dart';
 import 'package:propertify/utils/utils.dart';

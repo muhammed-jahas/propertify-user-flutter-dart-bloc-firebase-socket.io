@@ -7,23 +7,23 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-
-  
   HomeBloc() : super(HomeInitial()) {
     on<getAllProperties>(homeGetAllPropertiesEvent);
   }
 
-  FutureOr<void> homeGetAllPropertiesEvent(
-      event,emit) async {
+  FutureOr<void> homeGetAllPropertiesEvent(event, emit) async {
+    print('Start homeGetAllPropertiesEvent');
     emit(HomeLoadingState());
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 2));
     final either = await PropertyRepo().getAllProperties();
-
+    print('Here');
     either.fold((error) => {}, (response) {
       if (response['status'] == 'success') {
         final List rawData = response['properties'];
         final List<PropertyModel> properties =
             rawData.map((e) => PropertyModel.fromJson(e)).toList();
+        print('Here');
+        print('End homeGetAllPropertiesEvent');
         emit(HomeLoadedSuccessState(properties: properties));
       } else {
         print('Failed to get properties');

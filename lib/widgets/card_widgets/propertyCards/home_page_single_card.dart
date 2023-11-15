@@ -10,10 +10,12 @@ import '../../../views/presentation/properties_details_screen/property_details_s
 // ignore: must_be_immutable
 class HomePageCardSingle extends StatelessWidget {
   double? cardWidth;
+  double? cardHeight;
   PropertyModel? property;
   HomePageCardSingle({
     Key? key,
     this.cardWidth,
+    this.cardHeight,
     this.property,
   }) : super(key: key);
 
@@ -45,7 +47,7 @@ class HomePageCardSingle extends StatelessWidget {
                   child: property?.propertyCoverPicture?.path != null
                       ? Image.network(
                           '${property!.propertyCoverPicture!.path}',
-                          height: 120,
+                          height: cardHeight ?? 110,
                           width: double.infinity,
                           fit: BoxFit.cover,
                         )
@@ -69,51 +71,54 @@ class HomePageCardSingle extends StatelessWidget {
               ],
             ),
             customSpaces.verticalspace10,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    customSpaces.horizontalspace10,
-                    Text(
-                      property?.propertyName ?? '',
-                      style: AppFonts.SecondaryColorText14,
-                    ),
-                  ],
-                ),
-                customSpaces.verticalspace5,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    customSpaces.horizontalspace10,
-                    Text(
-                      property?.propertyCategory ?? '',
-                      style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    customSpaces.horizontalspace5,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(
-                          PropertifyIcons.location,
-                          color: Colors.grey,
-                          size: 12,
-                        ),
-                        customSpaces.horizontalspace5,
-                        Text(
-                          property?.propertyCity ?? '',
-                          style: AppFonts.greyText12,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      customSpaces.horizontalspace10,
+                      Text(
+                        property?.propertyName ?? '',
+                        style: AppFonts.SecondaryColorText14,
+                      ),
+                    ],
+                  ),
+                  customSpaces.verticalspace5,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      customSpaces.horizontalspace10,
+                      Text(
+                        property?.propertyCategory ?? '',
+                        style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      customSpaces.horizontalspace5,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            PropertifyIcons.location,
+                            color: Colors.grey,
+                            size: 12,
+                          ),
+                          customSpaces.horizontalspace5,
+                          Text(
+                            property?.propertyCity ?? '',
+                            style: AppFonts.greyText12,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),

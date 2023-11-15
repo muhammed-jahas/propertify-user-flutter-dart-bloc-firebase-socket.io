@@ -14,9 +14,10 @@ class HomePageCard extends StatelessWidget {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state is HomeLoadingState) {
-          return Center(
-            child: CircularProgressIndicator(),
+          return Container(
+            child: Center(child: CircularProgressIndicator()),
           );
+          
         } else if (state is HomeLoadedSuccessState) {
           return Container(
             child: GridView.builder(
