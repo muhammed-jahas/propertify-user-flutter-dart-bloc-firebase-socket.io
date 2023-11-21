@@ -56,6 +56,35 @@ class ApiServices {
     return Right(fetchedData);
   }
 
+  //Put Api
+  // Put Api
+static EitherResponse<Map> putApi(var data, String apiurl) async {
+  if (kDebugMode) {
+    print('ApiUrl: $apiurl');
+    print('Data: $data');
+  }
+
+  Map<String, dynamic> fetchedData = {};
+  final url = Uri.parse(apiurl);
+
+  try {
+    final response = await http.put(
+      url,
+      body: data.isNotEmpty ? jsonEncode(data) : null,
+      headers: _headers,
+    );
+
+    fetchedData = getResponse(response);
+  } catch (e) {
+    return Left(e as AppException);
+  }
+
+  return Right(fetchedData);
+}
+
+
+
+
 
 
   //Responses

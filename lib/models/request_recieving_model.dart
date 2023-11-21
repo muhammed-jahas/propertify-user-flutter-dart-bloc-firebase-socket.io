@@ -7,6 +7,7 @@ class RequestRecievingModel {
   AgentModel? agent;
   PropertyModel? property;
   String? paymentAmount;
+  bool? isPaid;
 
   RequestRecievingModel({
     required this.id,
@@ -14,6 +15,7 @@ class RequestRecievingModel {
     this.agent,
     this.property,
     this.paymentAmount,
+    this.isPaid,
   });
 
   factory RequestRecievingModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class RequestRecievingModel {
       agent: json['agent'] != null ? AgentModel.fromJson(json['agent']) : null,
       property: json['property'] != null ? PropertyModel.fromJson(json['property']) : null,
       paymentAmount: json['paymentAmount'],
+      isPaid : json['isPaid'],
     );
   }
 
@@ -30,6 +33,8 @@ class RequestRecievingModel {
     final Map<String, dynamic> data = {
       'user': user,
       'paymentAmount': paymentAmount,
+      'paymentRequestId' : id,
+      
     };
 
     // ignore: unnecessary_null_comparison

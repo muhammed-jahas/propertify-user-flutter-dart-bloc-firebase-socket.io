@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:propertify/blocs/search_bloc/search_bloc.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/spaces.dart';
+import 'package:propertify/constants/text_styles/text_styles.dart';
 import 'package:propertify/models/property_model.dart';
 import 'package:propertify/widgets/card_widgets/propertyCards/home_page_single_card.dart';
 import 'package:propertify/widgets/input_fileds/customInputFields.dart';
 
 class SearchScreen extends StatefulWidget {
-  SearchScreen({super.key});
+  String? searchQuery;
+  SearchScreen({super.key, this.searchQuery});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -16,14 +18,25 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final SearchController = TextEditingController();
-   @override
+  @override
   void initState() {
     super.initState();
-    _fetchAllProperties(); // Fetch all properties when the screen is first opened
+   
+    SearchController.text = widget.searchQuery ?? '';
+    if (widget.searchQuery != null) {
+      context
+          .read<SearchBloc>()
+          .add(SearchInputChangedEvent(widget.searchQuery!));
+    }else {
+      _fetchAllProperties();
+    }
+    // Fetch all properties when the screen is first opened
   }
+
   void _fetchAllProperties() {
     context.read<SearchBloc>().add(GetAllPropertiesEvent());
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,9 +51,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   context
                       .read<SearchBloc>()
                       .add(SearchInputChangedEvent(searchInput));
-                      print(searchInput);
+                  print(searchInput);
                 },
-                
                 fieldIcon: Icons.search,
                 hintText: 'Serach for properties',
                 controller: SearchController),
@@ -60,6 +72,11 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: CircularProgressIndicator(),
                     );
                   } else if (state is SearchLoadedSuccessState) {
+                    if (state.properties.isEmpty) {
+                        // Show 'No Results Found' when the list is empty
+                        return Center(
+                          child: Text('No Properties Found', style: AppFonts.SecondaryColorText20),
+                        ); }
                     return Container(
                       child: GridView.builder(
                         physics: NeverScrollableScrollPhysics(),
@@ -75,7 +92,8 @@ class _SearchScreenState extends State<SearchScreen> {
                               index]; // Access the property at the current index
                           return HomePageCardSingle(
                             cardWidth: 210,
-                            property: property, // Pass the property to the widget
+                            property:
+                                property, // Pass the property to the widget
                           );
                         },
                         itemCount: state.properties

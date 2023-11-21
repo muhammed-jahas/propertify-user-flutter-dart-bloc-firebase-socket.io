@@ -1,10 +1,15 @@
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/spaces.dart';
 import 'package:propertify/constants/text_styles/text_styles.dart';
+import 'package:propertify/data/shared_preferences/shared_preferences.dart';
 import 'package:propertify/models/agent_model.dart';
 import 'package:propertify/models/property_model.dart';
 import 'package:propertify/models/request_recieving_model.dart';
+import 'package:propertify/repositories/property_repo/property_repo.dart';
+import 'package:propertify/resources/components/custom_toast.dart';
+import 'package:propertify/views/presentation/navigation/navigation.dart';
 import 'package:propertify/widgets/buttons/custombuttons.dart';
 import 'package:propertify/widgets/card_widgets/propertyCards/home_page_single_card.dart';
 import 'package:propertify/widgets/iconbox/customIconBox.dart';
@@ -28,8 +33,16 @@ class NotificationSingleScreen extends StatefulWidget {
 class _NotificationSingleScreenState extends State<NotificationSingleScreen> {
   Razorpay? _razorpay;
 
-  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async  {
+
     print(response);
+    print('Payment Succesfull');
+    await showCustomToast(context, 'Payment Successful');
+    await _afterPayment();
+    
+    await  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => NavigationItems(newindex: 3),));
+    
+
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -49,7 +62,7 @@ double formattedAmount = double.parse(formattedAmountString);
       'amount' : formattedAmount,
       'name':request.user,
       'description':request.property!.propertyName,
-      'prefill':{'contact':'+919656462348','email':'jahas[ty1@gmal.com]'},
+      'prefill':{'contact':'+919656462348','email':'jahaspty1@gmal.com]'},
     };
     try {
       _razorpay?.open(options);
@@ -168,5 +181,27 @@ double formattedAmount = double.parse(formattedAmountString);
         ),
       ),
     );
+  }
+  
+  _afterPayment() async {
+    // String propertyId = widget.property!.id!;
+    // String? userId = await SharedPref.instance.getUserId();
+    String? paymentRequestId = widget.paymentrequest!.id;
+   
+    // Map<String, dynamic> favourite = {
+    //   "userId": userId,
+    //   "propertyId": propertyId
+    // };
+    print(paymentRequestId);
+   final  response = PropertyRepo().paymentSuccess(paymentRequestId);
+    response.fold((left) => print(left), (right) => (response) {
+      if(response['status']=='success'){
+        
+          return;
+      }else{
+        print('Payment Not Successful');
+      }
+    });
+
   }
 }

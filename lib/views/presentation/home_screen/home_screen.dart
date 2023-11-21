@@ -1,3 +1,4 @@
+// ignore: unused_import
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -138,7 +139,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         imagePath: 'assets/images/categories/house.jpg',
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CategoriesScreen(category: 'House'),
+                            builder: (context) =>
+                                CategoriesScreen(category: 'House'),
                           ));
                         },
                       ),
@@ -146,14 +148,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     customSpaces.horizontalspace10,
                     Expanded(
                       child: categoryBox(
-                          cateoryname: 'Apartment',
-                          imagePath: 'assets/images/categories/apartment.jpg',
-                          onTap: () {
+                        cateoryname: 'Apartment',
+                        imagePath: 'assets/images/categories/apartment.jpg',
+                        onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CategoriesScreen(category: 'Apartment'),
+                            builder: (context) =>
+                                CategoriesScreen(category: 'Apartment'),
                           ));
-                        },),
-                          
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -162,24 +165,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Expanded(
                       child: categoryBox(
-                          cateoryname: 'Office',
-                          imagePath: 'assets/images/categories/office.jpg',
-                          onTap: () {
+                        cateoryname: 'Office',
+                        imagePath: 'assets/images/categories/office.jpg',
+                        onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CategoriesScreen(category: 'Office'),
+                            builder: (context) =>
+                                CategoriesScreen(category: 'Office'),
                           ));
-                        },),
+                        },
+                      ),
                     ),
                     customSpaces.horizontalspace10,
                     Expanded(
                       child: categoryBox(
-                          cateoryname: 'Other',
-                          imagePath: 'assets/images/categories/other.jpg',
-                          onTap: () {
+                        cateoryname: 'Other',
+                        imagePath: 'assets/images/categories/other.jpg',
+                        onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CategoriesScreen(category: 'Other'),
+                            builder: (context) =>
+                                CategoriesScreen(category: 'Other'),
                           ));
-                        },),
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -224,10 +231,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 InkWell(
                   onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CategoriesScreen(),
-                          ));
-                        },
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CategoriesScreen(),
+                    ));
+                  },
                   child: Text(
                     'See All',
                     style: AppFonts.PrimaryColorText14,
@@ -290,49 +297,65 @@ class _HomeScreenState extends State<HomeScreen> {
     String selectedStateCode;
     // ignore: unused_local_variable
     String selectedDistrict;
-
+    TextEditingController placeController = TextEditingController();
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (context) {
-        return Container(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              customSpaces.verticalspace10,
-              // State and District Picker with default country as India
-              CSCPicker(
-                defaultCountry: CscCountry.India,
-                // Set India as the default country
-                onCountryChanged: (value) {
-                  // You can handle country changes if needed
-                },
-                onStateChanged: (value) {
-                  selectedState = value!;
-                },
-                onCityChanged: (value) {
-                  selectedDistrict = value!;
-                },
-                layout: Layout.vertical,
-                showStates: true,
-                showCities: true,
-                flagState: CountryFlag.ENABLE,
-                dropdownDecoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
+        return Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: Container(
+            padding: customPaddings.horizontalpadding20,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // customSpaces.verticalspace10,
+                // State and District Picker with default country as India
+                // CSCPicker(
+                //   defaultCountry: CscCountry.India,
+                //   // Set India as the default country
+                //   onCountryChanged: (value) {
+                //     // You can handle country changes if needed
+                //   },
+                //   onStateChanged: (value) {
+                //     selectedState = value!;
+                //   },
+                //   onCityChanged: (value) {
+                //     selectedDistrict = value!;
+                //   },
+                //   layout: Layout.vertical,
+                //   showStates: true,
+                //   showCities: true,
+                //   flagState: CountryFlag.ENABLE,
+                //   dropdownDecoration: BoxDecoration(
+                //     border: Border.all(color: Colors.grey),
+                //     borderRadius: BorderRadius.circular(8),
+                //   ),
+                //   selectedItemStyle: TextStyle(fontSize: 18),
+                //   dropdownHeadingStyle: TextStyle(fontSize: 16),
+                // ),
+                customSpaces.verticalspace20,
+                CustomInputField(
+                  hintText: 'Enter Place to Search',
+                  controller: placeController,
+                  fieldIcon: PropertifyIcons.location,
                 ),
-                selectedItemStyle: TextStyle(fontSize: 18),
-                dropdownHeadingStyle: TextStyle(fontSize: 16),
-              ),
-              customSpaces.verticalspace10,
-              CustomColorButton(
-                buttonText: 'Submit',
-                buttonColor: AppColors.primaryColor,
-                buttonFunction: () {
-                  // You can use selectedState and selectedDistrict here.
-                },
-              ),
-            ],
+
+                customSpaces.verticalspace10,
+                CustomColorButton(
+                  buttonText: 'Search',
+                  buttonColor: AppColors.primaryColor,
+                  buttonFunction: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          SearchScreen(searchQuery: placeController.text),
+                    ));
+                  },
+                ),
+                customSpaces.verticalspace20,
+              ],
+            ),
           ),
         );
       },

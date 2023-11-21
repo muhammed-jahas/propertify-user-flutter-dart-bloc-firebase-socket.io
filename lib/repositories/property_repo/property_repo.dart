@@ -9,4 +9,10 @@ class PropertyRepo {
   EitherResponse getAllProperties() async => await ApiServices.getApi(Appurls.getAllProperties);
 
   EitherResponse sendPropertyRequest(request) async => await ApiServices.postApi(request, Appurls.sendPropertyRequest);
+
+  EitherResponse addToFavourites(favourite) async => await ApiServices.postApi(favourite, Appurls.addFavourite);
+
+  EitherResponse paymentSuccess(paymentRequestId) async => await ApiServices.putApi('', '${Appurls.paymentSuccess}/$paymentRequestId');
+
+  // EitherResponse getAllPaidProperties(data) async => await ApiServices.postApi(data, Appurls.getAllPaymentRequests); 
 }

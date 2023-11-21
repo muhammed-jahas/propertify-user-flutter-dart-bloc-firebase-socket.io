@@ -192,53 +192,53 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       );
                     },
                   ),
-                  customSpaces.verticalspace20,
-                  Container(
-                    child: Row(
-                      children: [
-                        customSpaces.horizontalspace10,
-                        Expanded(
-                          child: Container(
-                            height: 1,
-                            color: Colors.grey.shade300,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Text(
-                            'OR',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey.shade500),
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            height: 1,
-                            color: Colors.grey.shade300,
-                          ),
-                        ),
-                        customSpaces.horizontalspace10,
-                      ],
-                    ),
-                  ),
-                  customSpaces.verticalspace20,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: SocialButton(
-                            buttonText: 'Sign Up with Google',
-                            buttonIcon: 'assets/icons/google-icon.svg'),
-                      ),
-                      customSpaces.horizontalspace10,
-                      Expanded(
-                        child: SocialButton(
-                            buttonText: 'Sign Up with Facebook',
-                            buttonIcon: 'assets/icons/facebook-icon.svg'),
-                      ),
-                    ],
-                  ),
+                  //customSpaces.verticalspace20,
+                  // Container(
+                  //   child: Row(
+                  //     children: [
+                  //       customSpaces.horizontalspace10,
+                  //       Expanded(
+                  //         child: Container(
+                  //           height: 1,
+                  //           color: Colors.grey.shade300,
+                  //         ),
+                  //       ),
+                  //       Padding(
+                  //         padding: EdgeInsets.symmetric(horizontal: 20),
+                  //         child: Text(
+                  //           'OR',
+                  //           style: TextStyle(
+                  //               fontSize: 14,
+                  //               fontWeight: FontWeight.w500,
+                  //               color: Colors.grey.shade500),
+                  //         ),
+                  //       ),
+                  //       Expanded(
+                  //         child: Container(
+                  //           height: 1,
+                  //           color: Colors.grey.shade300,
+                  //         ),
+                  //       ),
+                  //       customSpaces.horizontalspace10,
+                  //     ],
+                  //   ),
+                  // ),
+                  // customSpaces.verticalspace20,
+                  // Row(
+                  //   children: [
+                  //     Expanded(
+                  //       child: SocialButton(
+                  //           buttonText: 'Sign Up with Google',
+                  //           buttonIcon: 'assets/icons/google-icon.svg'),
+                  //     ),
+                  //     customSpaces.horizontalspace10,
+                  //     Expanded(
+                  //       child: SocialButton(
+                  //           buttonText: 'Sign Up with Facebook',
+                  //           buttonIcon: 'assets/icons/facebook-icon.svg'),
+                  //     ),
+                  //   ],
+                  // ),
                   customSpaces.verticalspace20,
                   CustomSpanText(
                     firstText: 'Already have an account ?',
