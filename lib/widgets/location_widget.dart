@@ -52,8 +52,8 @@ class locationWidget extends StatelessWidget {
                   ),
                   customSpaces.horizontalspace5,
                   Text(
-                    'Malappuram',
-                    style: AppFonts.SecondaryColorText16,
+                    'Search by location',
+                    style: AppFonts.greyText14,
                   ),
                 ],
               ),

@@ -32,7 +32,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            customSpaces.verticalspace40,
+            customSpaces.verticalspace20,
             Padding(
               padding: customPaddings.horizontalpadding20,
               child: Text(
@@ -40,6 +40,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 style: AppFonts.SecondaryColorText28,
               ),
             ),
+            customSpaces.verticalspace10,
+            Divider(),
             customSpaces.verticalspace10,
             Expanded(
               child: Padding(
@@ -51,28 +53,36 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         child: CircularProgressIndicator(),
                       );
                     } else if (state is PaymentRequestsLoadedSuccessState) {
-                      if (state.paymentRequests.isEmpty) {
-                        return Container(
-                          child: Text('No Paynment Requests'),
-                        );
-                      }else {
-                        return Container(
-                              child: ListView.separated(
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  print('In ListView Builder');
-                                  RequestRecievingModel paymentrequest =
-                                      state.paymentRequests[index];
+                      List<RequestRecievingModel> paidPaymentRequests = state
+                          .paymentRequests
+                          .where((request) => request.isPaid == false)
+                          .toList();
 
-                                  return NotificationWidget(
-                                      paymentrequest: paymentrequest);
-                                },
-                                separatorBuilder: (context, index) {
-                                  return customSpaces.verticalspace20;
-                                },
-                                itemCount: state.paymentRequests.length,
-                              ),
-                            );
+                      if (paidPaymentRequests.isEmpty) {
+                        return Center(
+                          child: Text(
+                            "No Notifications",
+                            style: AppFonts.SecondaryColorText20,
+                          ),
+                        );
+                      } else {
+                        return Container(
+                          child: ListView.separated(
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              print('In ListView Builder');
+                              RequestRecievingModel paymentrequest =
+                                  paidPaymentRequests[index];
+
+                              return NotificationWidget(
+                                  paymentrequest: paymentrequest);
+                            },
+                            separatorBuilder: (context, index) {
+                              return customSpaces.verticalspace20;
+                            },
+                            itemCount: paidPaymentRequests.length,
+                          ),
+                        );
                       }
                     }
                     return SizedBox(
@@ -108,7 +118,10 @@ class NotificationWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         // Get.to(() => NotificationSingleScreen(request: request));
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationSingleScreen(property: property,agent: agent,paymentrequest: paymentrequest),));
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => NotificationSingleScreen(
+              property: property, agent: agent, paymentrequest: paymentrequest),
+        ));
         print(paymentrequest.toJson());
       },
       child: Container(

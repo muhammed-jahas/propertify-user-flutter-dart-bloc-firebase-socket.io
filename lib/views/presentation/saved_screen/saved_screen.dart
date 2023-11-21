@@ -1,10 +1,13 @@
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:propertify/blocs/home_bloc/home_bloc.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/spaces.dart';
 import 'package:propertify/constants/text_styles/text_styles.dart';
+import 'package:propertify/data/shared_preferences/shared_preferences.dart';
 import 'package:propertify/models/property_model.dart';
+import 'package:propertify/repositories/user_repo/user_repo.dart';
 import 'package:propertify/widgets/card_widgets/propertyCards/home_page_single_card.dart';
 
 class SavedScreen extends StatefulWidget {
@@ -15,17 +18,37 @@ class SavedScreen extends StatefulWidget {
 }
 
 class _SavedScreenState extends State<SavedScreen> {
-  String selectedCategory = 'All'; // Default to show all categories
-
+  // Default to show all categories
+  List<String> favoritePropertyIds = [];
   void initState() {
     super.initState();
-    _fetchAllProperties();
+    
+    _fetchUserFavourites();
+     _fetchAllProperties();
   }
 
   void _fetchAllProperties() {
     context.read<HomeBloc>().add(getAllProperties());
   }
+  
 
+    _fetchUserFavourites() async {
+    String? userId = await SharedPref.instance.getUserId();
+    final response = UserRepo().getAllFavourites(userId);
+    response.fold(
+      (left) => print(left),
+      (response) => {
+        if (response['status'] == 'success') {
+          setState(() {
+            // Update favoritePropertyIds with the received property IDs
+            favoritePropertyIds =
+                List<String>.from(response['propertyIds']);
+          })
+        
+        }
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,22 +64,9 @@ class _SavedScreenState extends State<SavedScreen> {
                 style: AppFonts.SecondaryColorText28,
               ),
             ),
-            customSpaces.verticalspace20,
-            DropdownButton<String>(
-              value: selectedCategory,
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedCategory = newValue!;
-                });
-              },
-              items: ['All', 'House', 'Apartment', 'Office', 'Other']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
+            customSpaces.verticalspace10,
+            Divider(),
+            customSpaces.verticalspace10,
             Expanded(
               child: Padding(
                 padding: customPaddings.horizontalpadding20,
@@ -67,15 +77,15 @@ class _SavedScreenState extends State<SavedScreen> {
                         child: CircularProgressIndicator(),
                       );
                     } else if (state is HomeLoadedSuccessState) {
-                      List<PropertyModel> filteredProperties =
-                          selectedCategory == 'All'
-                              ? state.properties
-                              : state.properties
-                                  .where((property) =>
-                                      property.propertyCategory ==
-                                      selectedCategory)
-                                  .toList();
-
+                      List<PropertyModel> filteredProperties = state.properties
+          .where((property) =>
+              favoritePropertyIds.contains(property.id))
+          .toList();
+           if (filteredProperties.isEmpty) {
+                        // Show 'No Results Found' when the list is empty
+                        return Center(
+                          child: Text('No Favourites', style: AppFonts.SecondaryColorText20),
+                        ); }
                       return Container(
                         child: GridView.builder(
                           physics: NeverScrollableScrollPhysics(),
@@ -88,8 +98,7 @@ class _SavedScreenState extends State<SavedScreen> {
                             childAspectRatio: 1 / 1,
                           ),
                           itemBuilder: (context, index) {
-                            PropertyModel property =
-                                filteredProperties[index];
+                            PropertyModel property = filteredProperties[index];
                             return HomePageCardSingle(
                               cardWidth: 210,
                               property: property,
@@ -111,4 +120,6 @@ class _SavedScreenState extends State<SavedScreen> {
       ),
     );
   }
+  
+ 
 }

@@ -24,7 +24,7 @@ class Propertify extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -34,7 +34,7 @@ class Propertify extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         statusBarColor:
-            systemBrightness == Brightness.light ? Colors.white : Colors.black,
+            systemBrightness == Brightness.light ? Colors.transparent : Colors.black,
         statusBarIconBrightness: systemBrightness == Brightness.light
             ? Brightness.dark
             : Brightness.light,

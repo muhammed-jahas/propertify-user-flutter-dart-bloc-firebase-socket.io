@@ -1,6 +1,7 @@
 class Appurls {
 
   //Base Url
+  // static const String baseUrl = 'https://propertifyapp.online';
   static const String baseUrl = 'http://10.4.4.133:3000';
 
   //User Login
@@ -20,4 +21,16 @@ class Appurls {
 
   //Get All Payment Requests
   static const String getAllPaymentRequests =  '$baseUrl/api/user/getAllPaymentRequestsofUser';
+
+  //Add to Favourite
+  static const String addFavourite =  '$baseUrl/api/user/addFavouriteProperty';
+
+   //Get All Favourites
+  static const String getAllFavourites =  '$baseUrl/api/user/getFavouriteProperties';
+
+  //Payment Succes
+  static const String paymentSuccess =  '$baseUrl/api/user/markPaymentRequestPaid';
+
+  //Update Profile
+  static const String editProfile =  '$baseUrl/api/user/updateUserDetails';
 }

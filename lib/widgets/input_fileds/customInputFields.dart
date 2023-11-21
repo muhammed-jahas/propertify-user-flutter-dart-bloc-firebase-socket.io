@@ -167,9 +167,9 @@ class CustomInputField extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           color: bgColor ?? Colors.transparent,
-          border: Border.all(
-            color: borderColor ?? Colors.grey,
-          ),
+          // border: Border.all(
+          //   color: borderColor ?? Colors.grey,
+          // ),
         ),
         child: TextFormField(
           onTap: () {
@@ -206,7 +206,7 @@ class CustomInputField extends StatelessWidget {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(4),
               borderSide: BorderSide(
-                color: Colors.transparent,
+                color: Colors.grey,
                 width: 1,
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:propertify/constants/icons/propertify_icons.dart';
@@ -7,6 +8,7 @@ import 'package:propertify/constants/spaces%20&%20paddings/spaces.dart';
 import 'package:propertify/constants/text_styles/text_styles.dart';
 import 'package:propertify/data/shared_preferences/shared_preferences.dart';
 import 'package:propertify/models/request_sending_model.dart';
+import 'package:propertify/repositories/property_repo/property_repo.dart';
 import 'package:propertify/resources/components/custom_toast.dart';
 import 'package:propertify/views/coming_soon/coming_soon.dart';
 import 'package:propertify/widgets/buttons/custombuttons.dart';
@@ -49,7 +51,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     // Future<UserModel> user = getUserData();
-  
+
     return Scaffold(
       body: Column(
         children: [
@@ -103,6 +105,9 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                             boxColor: Colors.transparent,
                             iconSize: 24,
                             IconColor: Colors.white,
+                            iconFunction: () {
+                              Navigator.of(context).pop();
+                            },
                           ),
                         ),
                         Positioned(
@@ -118,17 +123,19 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                                 boxColor: Colors.transparent,
                                 iconSize: 24,
                                 IconColor: Colors.white,
-                                iconFunction: () {},
+                                iconFunction: () async  {
+                                  await _addToFavourites();
+                                },
                               ),
-                              CustomIconBox(
-                                boxheight: 40,
-                                boxwidth: 40,
-                                boxIcon: Icons.share_outlined,
-                                radius: 8,
-                                boxColor: Colors.transparent,
-                                iconSize: 24,
-                                IconColor: Colors.white,
-                              ),
+                              // CustomIconBox(
+                              //   boxheight: 40,
+                              //   boxwidth: 40,
+                              //   boxIcon: Icons.share_outlined,
+                              //   radius: 8,
+                              //   boxColor: Colors.transparent,
+                              //   iconSize: 24,
+                              //   IconColor: Colors.white,
+                              // ),
                             ],
                           ),
                         ),
@@ -309,7 +316,9 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                                 iconSize: 24,
                                 IconColor: AppColors.secondaryColor,
                                 iconFunction: () {
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ComingSoon(),));
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ComingSoon(),
+                                  ));
                                 },
                               )
                             ],
@@ -548,7 +557,8 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
       context: context,
       builder: (context) {
         return Padding(
-          padding:  EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Container(
             child: Padding(
               padding: customPaddings.horizontalpadding20,
@@ -568,11 +578,11 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                         PrimaryButton(
                           buttonText: 'Send Enquiry',
                           buttonFunction: () {
-                            if(message.text.isEmpty){
-                              showCustomToast(context, 'Please Enter Some Info',AppColors.alertColor);
+                            if (message.text.isEmpty) {
+                              showCustomToast(context, 'Please Enter Some Info',
+                                  AppColors.alertColor);
                             }
                             if (message.text.isNotEmpty) {
-                              
                               CreateRequest request = CreateRequest(
                                 agentId: property.agent!.id,
                                 userId: userId,
@@ -593,19 +603,22 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                       height: 200,
                       child: Center(
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.green.shade100,
-                                child: Icon(Icons.check,color: Colors.green.shade800,)),
-                                customSpaces.verticalspace20,
-                              Text(
-                        state.message,
-                        style: AppFonts.PrimaryColorText16,
-                        textAlign: TextAlign.center,
-                      ),
-                            ],
-                          )),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                              backgroundColor: Colors.green.shade100,
+                              child: Icon(
+                                Icons.check,
+                                color: Colors.green.shade800,
+                              )),
+                          customSpaces.verticalspace20,
+                          Text(
+                            state.message,
+                            style: AppFonts.PrimaryColorText16,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      )),
                     );
                   } else if (state is RequestSendPopState) {
                     Navigator.pop(context);
@@ -621,7 +634,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                       )),
                     );
                   }
-        
+
                   return SizedBox();
                 },
               ),
@@ -630,6 +643,21 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
         );
       },
     );
+  }
+
+  _addToFavourites() async {
+    String propertyId = widget.property.id!;
+    String? userId = await SharedPref.instance.getUserId();
+   
+    Map<String, dynamic> favourite = {
+      "userId": userId,
+      "propertyId": propertyId
+    };
+    print(favourite);
+   final  response = PropertyRepo().addToFavourites(favourite);
+    response.fold((left) => print(left), (right) {
+      showCustomToast(context, 'Added to Favourites');
+    });
   }
 }
 

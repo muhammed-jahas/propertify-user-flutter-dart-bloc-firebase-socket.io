@@ -1,4 +1,4 @@
-package com.example.propertify
+package com.propertify.propertify
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,3 +1,4 @@
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:propertify/constants/colors/colors.dart';
@@ -6,11 +7,15 @@ import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/spaces.dart';
 import 'package:propertify/constants/text_styles/text_styles.dart';
 import 'package:propertify/data/shared_preferences/shared_preferences.dart';
+import 'package:propertify/repositories/user_repo/user_repo.dart';
 import 'package:propertify/views/presentation/profile_screen/app_info.dart';
 import 'package:propertify/views/presentation/profile_screen/help_.dart';
 import 'package:propertify/views/presentation/profile_screen/privacy&policy.dart';
 import 'package:propertify/views/presentation/profile_screen/terms&conditions.dart';
+import 'package:propertify/views/presentation/search_screen/search_screen.dart';
 import 'package:propertify/views/presentation/welcome_screen/welcome_screen.dart';
+import 'package:propertify/widgets/buttons/custombuttons.dart';
+import 'package:propertify/widgets/input_fileds/customInputFields.dart';
 
 import '../../../blocs/login_bloc/login_bloc.dart';
 
@@ -25,7 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? userPhone;
   String? userEmail;
   String? userName;
-
+  final GlobalKey<FormState> profileEditKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
@@ -64,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Text(
                   userName != null && userName!.isNotEmpty
                       ? userName![0].toUpperCase()
-                      : 'N/A',
+                      : '',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -73,19 +78,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               customSpaces.verticalspace20,
               Text(
-                userName ?? 'N\A',
+                
+                userName ?? '',
                 style: AppFonts.SecondaryColorText20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    userEmail ?? 'N\A',
+                    userEmail ?? '',
                     style: AppFonts.greyText14,
                   ),
-                  Text(
-                    'Edit Profile',
-                    style: AppFonts.PrimaryColorText14,
+                  InkWell(
+                    onTap: () {
+                      editProfileBottomSheet(context, userName, userEmail);
+                    },
+                    child: Text(
+                      'Edit Profile',
+                      style: AppFonts.PrimaryColorText14,
+                    ),
                   ),
                 ],
               )
@@ -214,10 +225,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: ListTile(
               onTap: () async {
                 await signOutUser();
-                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-                  builder: (context) => WelcomeScreen(),
-                ),
-                (route) => false,
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => WelcomeScreen(),
+                  ),
+                  (route) => false,
                 );
               },
               contentPadding: EdgeInsets.all(0),
@@ -237,6 +249,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   fetchuserData() async {
+    
     final userPhonefetched = await SharedPref.instance.getUser();
     if (userPhonefetched != null) {
       setState(() {
@@ -260,5 +273,116 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   signOutUser() async {
     await SharedPref.instance.sharedPref.remove(SharedPref.userPhone);
+  }
+
+  void editProfileBottomSheet(
+      BuildContext context, String? userName, String? userEmail) {
+    TextEditingController nameUpdateController = TextEditingController();
+    TextEditingController emailUpdateController = TextEditingController();
+    nameUpdateController.text = userName!;
+    emailUpdateController.text = userEmail!;
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return Padding(
+           padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: Container(
+            padding: customPaddings.horizontalpadding20,
+            child: Form(
+              key: profileEditKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  customSpaces.verticalspace20,
+                  CustomInputField(
+                    hintText: 'Enter Name',
+                    controller: nameUpdateController,
+                    fieldIcon: PropertifyIcons.user,
+                    validator: (value) {
+                      final error = _validateUserName(value!);
+                      return error;
+                    },
+                  ),
+                  customSpaces.verticalspace10,
+                  CustomInputField(
+                    hintText: 'Enter Email',
+                    controller: emailUpdateController,
+                    fieldIcon: Icons.mail_outline_rounded,
+                    validator: (value) {
+                      final error = _validateEmail(value!);
+                      return error;
+                    },
+                  ),
+                  customSpaces.verticalspace10,
+                  CustomColorButton(
+                    buttonText: 'Update',
+                    buttonColor: AppColors.primaryColor,
+                    buttonFunction: () async {
+                      await updateProfileDetails(
+                          nameUpdateController.text, emailUpdateController.text);
+                    },
+                  ),
+                  customSpaces.verticalspace20,
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  updateProfileDetails(String newName, String newMail) async {
+    if (profileEditKey.currentState!.validate()) {
+      String? userId = await SharedPref.instance.getUserId();
+      Map<String, dynamic> updateProfile = {
+        "username": newName,
+        "useremail": newMail
+      };
+      print(updateProfile);
+      final response = UserRepo().editProfileDetails(updateProfile, userId);
+      response.fold(
+          (left) => print(left),
+          (response) => {
+                if (response['status'] == 'success')
+                  {
+                    storeUserData(newName, newMail),
+                    Navigator.of(context).pop(),
+                  }
+                else
+                  {}
+              });
+    }
+  }
+
+  storeUserData(String name, String email) async {
+    print('In STORE Data');
+    await SharedPref.instance.sharedPref.setString(SharedPref.userName, name);
+    await SharedPref.instance.sharedPref.setString(SharedPref.userEmail, email);
+    setState(() {});
+    return;
+  }
+
+  _validateUserName(String value) {
+    if (value.isEmpty || value.trim().isEmpty) {
+      return 'Please enter your username';
+    }
+    return null;
+  }
+
+  _validateEmail(String value) {
+    // Regular expression pattern for a valid email address
+    final emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$';
+    final regExp = RegExp(emailPattern);
+
+    if (value.isEmpty || value.trim().isEmpty) {
+      return 'Please enter your email';
+    } else if (!regExp.hasMatch(value)) {
+      return 'Please enter a valid email address';
+    }
+
+    return null;
   }
 }

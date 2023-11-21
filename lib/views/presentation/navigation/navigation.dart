@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:propertify/constants/icons/propertify_icons.dart';
 import 'package:propertify/views/coming_soon/coming_soon.dart';
+import 'package:propertify/views/history_screen/history_screen.dart';
 import 'package:propertify/views/presentation/home_screen/home_screen.dart';
 import 'package:propertify/constants/colors/colors.dart';
 import 'package:propertify/views/presentation/profile_screen/profile_screen.dart';
 import 'package:propertify/views/presentation/search_screen/search_screen.dart';
 
 class NavigationItems extends StatefulWidget {
-  NavigationItems({Key? key});
+  int? newindex;
+  NavigationItems({Key? key, this.newindex});
 
   @override
   State<NavigationItems> createState() => _NavigationItemsState();
 }
 
 class _NavigationItemsState extends State<NavigationItems> {
+  
   int _currentIndex = 0;
   final List<Widget> _screens = [
     HomeScreen(),
@@ -21,10 +24,15 @@ class _NavigationItemsState extends State<NavigationItems> {
     ComingSoon(),
     
     // InboxScreen(),
-    ComingSoon(),
+    HistoryScreen(),
     ProfileScreen(),
   ];
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _currentIndex = widget.newindex ?? 0;
+  }
   @override
   Widget build(BuildContext context) {
       
