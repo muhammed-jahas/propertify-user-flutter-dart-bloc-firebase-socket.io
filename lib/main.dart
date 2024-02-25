@@ -58,6 +58,7 @@ class Propertify extends StatelessWidget {
       child: MaterialApp(
         home: SplashScreen(),
         theme: ThemeData(
+          useMaterial3: false,
           progressIndicatorTheme: ProgressIndicatorThemeData(
             color: AppColors.primaryColor.shade100,
             circularTrackColor: AppColors.primaryColor,

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:propertify/views/presentation/auth_screens/login_screen.dart';
 import 'package:propertify/constants/colors/colors.dart';
@@ -42,8 +41,7 @@ class WelcomeScreen extends StatelessWidget {
               ),
             ),
             customSpaces.verticalspace20,
-            
-            
+
             // Container(
             //   child: Row(
             //     children: [
@@ -93,18 +91,20 @@ class WelcomeScreen extends StatelessWidget {
             customSpaces.verticalspace20,
             Column(
               children: [
-                PrimaryButtonwithIcon(buttonText: 'Login with Phone Number',buttonIcon: Icons.phone,buttonFunction: () {
-              _requestPermission(context);
-             
-            },),
-            customSpaces.verticalspace40,
-
+                PrimaryButtonwithIcon(
+                  buttonText: 'Login with Phone Number',
+                  buttonIcon: Icons.phone,
+                  buttonFunction: () {
+                    _requestPermission(context);
+                  },
+                ),
+                customSpaces.verticalspace40,
                 CustomSpanText(
                   firstText: 'Don’t have an account ?',
                   spanText: 'Sign Up',
                   spanFunction: () {
-                     _requestPermissionforsignup(context);
-                   ;
+                    //    _requestPermissionforsignup(context);
+                    //  ;
                   },
                 ),
               ],
@@ -115,23 +115,24 @@ class WelcomeScreen extends StatelessWidget {
       ),
     );
   }
-  
-    Future<void> _requestPermission(BuildContext context) async {
+
+  Future<void> _requestPermission(BuildContext context) async {
     // Request necessary permissions
     var status = await Permission.location.request();
     var storageStatus = await Permission.storage.request();
 
     // Check if the permissions are granted
-    if (status == PermissionStatus.granted &&
-        storageStatus == PermissionStatus.granted) {
+    if (status == PermissionStatus.granted) {
       // Permissions are granted, navigate to the login screen
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginScreen()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => LoginScreen()));
     } else {
       // Permissions are not granted, you can show a message or handle it accordingly
       // For simplicity, a SnackBar is shown here
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Permissions not granted. Please enable them in settings.'),
+          content:
+              Text('Permissions not granted. Please enable them in settings.'),
         ),
       );
     }
@@ -146,19 +147,17 @@ class WelcomeScreen extends StatelessWidget {
     if (status == PermissionStatus.granted &&
         storageStatus == PermissionStatus.granted) {
       // Permissions are granted, navigate to the login screen
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpScreen()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => SignUpScreen()));
     } else {
       // Permissions are not granted, you can show a message or handle it accordingly
       // For simplicity, a SnackBar is shown here
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Permissions not granted. Please enable them in settings.'),
+          content:
+              Text('Permissions not granted. Please enable them in settings.'),
         ),
       );
     }
   }
 }
-
-
-
-

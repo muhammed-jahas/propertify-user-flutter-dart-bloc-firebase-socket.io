@@ -4,6 +4,7 @@ import 'package:propertify/views/coming_soon/coming_soon.dart';
 import 'package:propertify/views/history_screen/history_screen.dart';
 import 'package:propertify/views/presentation/home_screen/home_screen.dart';
 import 'package:propertify/constants/colors/colors.dart';
+import 'package:propertify/views/presentation/inbox_screen/inbox_screen.dart';
 import 'package:propertify/views/presentation/profile_screen/profile_screen.dart';
 import 'package:propertify/views/presentation/search_screen/search_screen.dart';
 
@@ -21,9 +22,9 @@ class _NavigationItemsState extends State<NavigationItems> {
   final List<Widget> _screens = [
     HomeScreen(),
     SearchScreen(),
-    ComingSoon(),
+    // ComingSoon(),
     
-    // InboxScreen(),
+    InboxScreen(),
     HistoryScreen(),
     ProfileScreen(),
   ];
