@@ -57,7 +57,7 @@ class SocketManager {
   }
 
   SocketManager._internal() {
-    socket = IO.io('http://192.168.64.11:4000', <String, dynamic>{
+    socket = IO.io('http://192.168.77.11:4000', <String, dynamic>{
       'transports': ['websocket'],
     });
   }

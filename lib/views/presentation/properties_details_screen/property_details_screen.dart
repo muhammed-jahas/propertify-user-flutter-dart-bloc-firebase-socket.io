@@ -31,14 +31,27 @@ class PropertyDetailsScreen extends StatefulWidget {
 
 class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
   String? userId;
+  bool? isFavourite;
 
   @override
   void initState() {
     super.initState();
-    getUserIdFromSharedPrefs();
+    _initializeData();
   }
 
-  void getUserIdFromSharedPrefs() async {
+  Future<void> _initializeData() async {
+    await getUserIdFromSharedPrefs();
+    await _updateIsFavourite();
+  }
+
+  Future<void> _updateIsFavourite() async {
+    bool favorite = await checkFavourites();
+    setState(() {
+      isFavourite = favorite;
+    });
+  }
+
+  getUserIdFromSharedPrefs() async {
     final sharedPref = SharedPref.instance;
     userId = await sharedPref.getUserId();
     if (userId != null) {
@@ -115,18 +128,23 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                           top: 40,
                           child: Row(
                             children: [
-                              CustomIconBox(
-                                boxheight: 40,
-                                boxwidth: 40,
-                                boxIcon: Icons.bookmark_border,
-                                radius: 8,
-                                boxColor: Colors.transparent,
-                                iconSize: 24,
-                                IconColor: Colors.white,
-                                iconFunction: () async  {
-                                  await _addToFavourites();
-                                },
-                              ),
+                              if (isFavourite !=
+                                  null) // Check if favorite status is available
+                                CustomIconBox(
+                                  boxheight: 40,
+                                  boxwidth: 40,
+                                  boxIcon: isFavourite!
+                                      ? Icons.bookmark_outlined
+                                      : Icons.bookmark_border_outlined,
+                                  radius: 8,
+                                  boxColor: Colors.transparent,
+                                  iconSize: 24,
+                                  IconColor: Colors.white,
+                                  iconFunction: () async {
+                                    await _addToFavourites();
+                                    await _updateIsFavourite();
+                                  },
+                                ),
                               // CustomIconBox(
                               //   boxheight: 40,
                               //   boxwidth: 40,
@@ -648,16 +666,43 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
   _addToFavourites() async {
     String propertyId = widget.property.id!;
     String? userId = await SharedPref.instance.getUserId();
-   
+
     Map<String, dynamic> favourite = {
       "userId": userId,
       "propertyId": propertyId
     };
     print(favourite);
-   final  response = PropertyRepo().addToFavourites(favourite);
+    final response = PropertyRepo().addToFavourites(favourite);
     response.fold((left) => print(left), (right) {
-      showCustomToast(context, 'Added to Favourites');
+      showCustomToast(context, '${right['message']}');
     });
+    await _updateIsFavourite();
+  }
+
+  Future<bool> checkFavourites() async {
+    print('Here');
+    String propertyId = widget.property.id!;
+    String? userId = await SharedPref.instance.getUserId();
+
+    Map<String, dynamic> checkFavourite = {
+      "userId": userId,
+      "propertyId": propertyId
+    };
+    final response = await PropertyRepo().checkFavorite(checkFavourite);
+    print(response);
+    return response.fold((left) {
+      print(left);
+      return false; // Return false if there's an error
+    }, (right) {
+      print(right);
+      return right['isFavorite'] ?? false; // Return the actual favorite status
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _updateIsFavourite();
   }
 }
 
