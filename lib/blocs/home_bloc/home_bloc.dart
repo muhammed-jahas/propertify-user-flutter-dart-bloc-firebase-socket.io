@@ -21,8 +21,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     either.fold((error) => {}, (response) {
       if (response['status'] == 'success') {
         final List rawData = response['properties'];
-        final List<PropertyModel> properties =
-            rawData.map((e) => PropertyModel.fromJson(e)).toList();
+        // final List<PropertyModel> properties =
+        //     rawData.map((e) => PropertyModel.fromJson(e)).toList();
+        final List<PropertyModel> properties = rawData
+            .map((e) => PropertyModel.fromJson(e))
+            .where(
+                (property) => !property.isSold!) // Filter out sold properties
+            .toList();
         print('Here');
         print('End homeGetAllPropertiesEvent');
         emit(HomeLoadedSuccessState(properties: properties));
@@ -32,25 +37,4 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     });
   }
-
-  // FutureOr<void> GetAllFavouriteProperties(event, emit) async {
-  //   print('Start homeGetAllPropertiesEvent');
-  //   emit(HomeLoadingState());
-  //   await Future.delayed(Duration(seconds: 2));
-  //   final either = await PropertyRepo().getAllProperties();
-  //   print('Here');
-  //   either.fold((error) => {}, (response) {
-  //     if (response['status'] == 'success') {
-  //       final List rawData = response['properties'];
-  //       final List<PropertyModel> properties =
-  //           rawData.map((e) => PropertyModel.fromJson(e)).toList();
-  //       print('Here');
-  //       print('End homeGetAllPropertiesEvent');
-  //       emit(HomeLoadedSuccessState(properties: properties));
-  //     } else {
-  //       print('Failed to get properties');
-  //       emit(HomeLoadedFailedState());
-  //     }
-  //   });
-  // }
 }

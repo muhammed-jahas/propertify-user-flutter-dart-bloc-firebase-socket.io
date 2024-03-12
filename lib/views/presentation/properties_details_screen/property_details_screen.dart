@@ -643,12 +643,23 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                   } else if (state is RequestErrorState) {
                     print(state.message);
                     return Container(
-                      height: 100,
+                      height: 150,
                       child: Center(
-                          child: Text(
-                        state.message,
-                        style: AppFonts.RedColorText16,
-                        textAlign: TextAlign.center,
+                          child: Column(
+                        children: [
+                          customSpaces.verticalspace20,
+                          Text(
+                            '🤝',
+                            style: TextStyle(fontSize: 48),
+                          ),
+                          customSpaces.verticalspace5,
+                          Text(
+                            state.message,
+                            style: AppFonts.greyText14,
+                            textAlign: TextAlign.center,
+                          ),
+                          customSpaces.verticalspace20,
+                        ],
                       )),
                     );
                   }
@@ -702,7 +713,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
   @override
   void dispose() {
     super.dispose();
-    _updateIsFavourite();
+    // _updateIsFavourite();
   }
 }
 

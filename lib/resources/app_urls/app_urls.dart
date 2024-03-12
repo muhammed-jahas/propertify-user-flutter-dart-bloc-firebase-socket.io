@@ -1,8 +1,8 @@
 class Appurls {
 
   //Base Url
-  // static const String baseUrl = 'https://propertifyapp.online';
-  static const String baseUrl = 'http://192.168.77.11:3000';
+  static const String baseUrl = 'https://propertifyapp.online';
+  // static const String baseUrl = 'http://10.4.2.58:3000';
 
   //User Login
   static const String userLogin = '$baseUrl/api/user/loginUser';
