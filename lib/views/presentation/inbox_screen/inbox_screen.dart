@@ -101,32 +101,50 @@ class _InboxScreenState extends State<InboxScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Chat Entries'),
-      ),
-      body: ListView.builder(
-        itemCount: chatEntries.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(chatEntries[index].id),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      ChatScreen(chatEntryId: chatEntries[index].id),
-                ),
-              );
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          socket.emit('createChatEntry');
-        },
-        child: Icon(Icons.add),
+    return SafeArea(
+      child: Scaffold(
+        // appBar: AppBar(
+        //   title: Text('Chat Entries'),
+        // ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            customSpaces.verticalspace20,
+            Padding(
+              padding: customPaddings.horizontalpadding20,
+              child: Text(
+                "Inbox",
+                style: AppFonts.SecondaryColorText28,
+              ),
+            ),
+            customSpaces.verticalspace10,
+            Divider(),
+            customSpaces.verticalspace10,
+            // ListView.builder(
+            //   itemCount: chatEntries.length,
+            //   itemBuilder: (context, index) {
+            //     return ListTile(
+            //       title: Text(chatEntries[index].id),
+            //       onTap: () {
+            //         Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //             builder: (context) =>
+            //                 ChatScreen(chatEntryId: chatEntries[index].id),
+            //           ),
+            //         );
+            //       },
+            //     );
+            //   },
+            // ),
+          ],
+        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     socket.emit('createChatEntry');
+        //   },
+        //   child: Icon(Icons.add),
+        // ),
       ),
     );
   }

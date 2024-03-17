@@ -9,11 +9,11 @@ import '../../../models/property_model.dart';
 import '../../../views/presentation/properties_details_screen/property_details_screen.dart';
 
 // ignore: must_be_immutable
-class HomePageCardSingle extends StatelessWidget {
+class HomePageRecentCradSingle extends StatelessWidget {
   double? cardWidth;
   double? cardHeight;
   PropertyModel? property;
-  HomePageCardSingle({
+  HomePageRecentCradSingle({
     Key? key,
     this.cardWidth,
     this.cardHeight,
@@ -51,7 +51,7 @@ class HomePageCardSingle extends StatelessWidget {
                   child: property?.propertyCoverPicture?.path != null
                       ? Image.network(
                           '${property!.propertyCoverPicture!.path}',
-                          height: cardHeight ?? 110,
+                          height: cardHeight ?? 200,
                           width: double.infinity,
                           fit: BoxFit.cover,
                         )
@@ -95,7 +95,7 @@ class HomePageCardSingle extends StatelessWidget {
                       customSpaces.horizontalspace10,
                       Text(
                         property?.propertyName ?? '',
-                        style: AppFonts.SecondaryColorText18,
+                        style: AppFonts.SecondaryColorText24,
                       ),
                     ],
                   ),
@@ -133,6 +133,7 @@ class HomePageCardSingle extends StatelessWidget {
                 ],
               ),
             ),
+            customSpaces.verticalspace10
           ],
         ),
       ),

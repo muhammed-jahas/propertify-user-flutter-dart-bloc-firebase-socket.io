@@ -19,16 +19,11 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     validateUser();
-    // getUserData();
+    dispatchInitialEvents(); // Add this line to dispatch initial events
   }
 
   @override
   Widget build(BuildContext context) {
-     //context.read<HomeBloc>().add(getAllProperties());
-    // context.read<PaymentRequestsBloc>().add(getAllPaymentRequestsEvent());
-    BlocProvider.of<HomeBloc>(context).add(getAllProperties());
-    BlocProvider.of<PaymentRequestsBloc>(context)
-        .add(getAllPaymentRequestsEvent());
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       body: Column(
@@ -51,7 +46,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void validateUser() async {
     final userPhone = await SharedPref.instance.getUser();
     if (userPhone != null) {
-      print('this is in splash: $userPhone');
       try {
         await gotoDashboard(context);
       } catch (e) {
@@ -73,12 +67,11 @@ class _SplashScreenState extends State<SplashScreen> {
     Navigator.of(ctx).pushReplacement(
         MaterialPageRoute(builder: (context) => WelcomeScreen()));
   }
-}
 
-// Future<UserModel> getUserData() async {
-//   final userPhone = await SharedPref.instance.getUser();
-//   UserModel user = UserModel(
-//     usermobNo: userPhone,
-//   );
-//   return user;
-// }
+  // Dispatch initial events here
+  void dispatchInitialEvents() {
+    // BlocProvider.of<HomeBloc>(context).add(getAllProperties());
+    BlocProvider.of<PaymentRequestsBloc>(context)
+        .add(getAllPaymentRequestsEvent());
+  }
+}

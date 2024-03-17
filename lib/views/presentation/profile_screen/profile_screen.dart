@@ -8,6 +8,7 @@ import 'package:propertify/constants/spaces%20&%20paddings/spaces.dart';
 import 'package:propertify/constants/text_styles/text_styles.dart';
 import 'package:propertify/data/shared_preferences/shared_preferences.dart';
 import 'package:propertify/repositories/user_repo/user_repo.dart';
+import 'package:propertify/resources/components/custom_toast.dart';
 import 'package:propertify/views/presentation/profile_screen/app_info.dart';
 import 'package:propertify/views/presentation/profile_screen/help_.dart';
 import 'package:propertify/views/presentation/profile_screen/privacy&policy.dart';
@@ -56,6 +57,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   "Profile",
                   style: AppFonts.SecondaryColorText28,
                 ),
+                customSpaces.verticalspace10,
+                Divider(),
+                customSpaces.verticalspace10,
               ],
             ),
           ),
@@ -78,7 +82,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               customSpaces.verticalspace20,
               Text(
-                
                 userName ?? '',
                 style: AppFonts.SecondaryColorText20,
               ),
@@ -224,12 +227,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: customPaddings.horizontalpadding20,
             child: ListTile(
               onTap: () async {
-                await signOutUser();
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => WelcomeScreen(),
-                  ),
-                  (route) => false,
+                showCustomBottomSheet(
+                  context,
+                  'Are you sure you want to Sign out ?',
+                  () async {
+                    await signOutUser();
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => WelcomeScreen(),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                  () {
+                    Navigator.pop(context);
+                    print('Cancel pressed');
+                  },
                 );
               },
               contentPadding: EdgeInsets.all(0),
@@ -249,7 +262,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   fetchuserData() async {
-    
     final userPhonefetched = await SharedPref.instance.getUser();
     if (userPhonefetched != null) {
       setState(() {
@@ -286,7 +298,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (context) {
         return Padding(
-           padding:
+          padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Container(
             padding: customPaddings.horizontalpadding20,
@@ -320,8 +332,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     buttonText: 'Update',
                     buttonColor: AppColors.primaryColor,
                     buttonFunction: () async {
-                      await updateProfileDetails(
-                          nameUpdateController.text, emailUpdateController.text);
+                      await updateProfileDetails(nameUpdateController.text,
+                          emailUpdateController.text);
                     },
                   ),
                   customSpaces.verticalspace20,

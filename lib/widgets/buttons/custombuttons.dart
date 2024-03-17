@@ -19,7 +19,7 @@ class PrimaryButton extends StatelessWidget {
       height: 54,
       decoration: BoxDecoration(
           color: Colors.amber, borderRadius: BorderRadius.circular(20)),
-      width: double.maxFinite,
+      // width: 100,
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(8)),
         child: ElevatedButton(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:propertify/blocs/login_bloc/login_bloc.dart';
 import 'package:propertify/resources/components/custom_toast.dart';
@@ -35,17 +36,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: customPaddings.horizontalpadding20,
-            child: Form(
-              // autovalidateMode: AutovalidateMode.onUserInteraction,
-              key: signupKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  customSpaces.verticalspace20,
-                  Container(
+        child: Padding(
+          padding: customPaddings.horizontalpadding20,
+          child: Form(
+            // autovalidateMode: AutovalidateMode.onUserInteraction,
+            key: signupKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                customSpaces.verticalspace20,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
                     decoration: BoxDecoration(
                       color: Colors.grey.shade300,
                       borderRadius: BorderRadius.circular(10),
@@ -60,198 +65,199 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ),
-                  customSpaces.verticalspace20,
-                  Text(
-                    'Get Started!',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.secondaryColor,
+                ),
+                customSpaces.verticalspace20,
+                Text(
+                  'Get Started!',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.secondaryColor,
+                  ),
+                ),
+                Text(
+                  'Create an account to continue.',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey.shade400,
+                  ),
+                ),
+                customSpaces.verticalspace20,
+                MobileInputField(
+                  controller: phoneNumberController,
+                ),
+                customSpaces.verticalspace10,
+                CustomInputField(
+                  fieldIcon: Icons.lock_outline,
+                  hintText: 'Enter your prefered username',
+                  controller: userNameController,
+                  validator: (value) {
+                    final error = _validateUserName(value!);
+                    return error;
+                  },
+                ),
+                customSpaces.verticalspace10,
+                CustomInputField(
+                  fieldIcon: Icons.lock_outline,
+                  hintText: 'Enter your password',
+                  controller: passwordController,
+                  validator: (value) {
+                    final error = _validatePassword(value!);
+                    return error;
+                  },
+                ),
+                customSpaces.verticalspace10,
+                CustomInputField(
+                  fieldIcon: Icons.lock_outline,
+                  hintText: 'Confirm password',
+                  controller: confirmPasswordController,
+                  validator: (value) {
+                    final error = _validateConfirmPassword(
+                        value!, passwordController.text);
+                    return error;
+                  },
+                ),
+                customSpaces.verticalspace10,
+                CustomInputField(
+                  fieldIcon: Icons.lock_outline,
+                  hintText: 'Enter your Email',
+                  controller: userEmailController,
+                  validator: (value) {
+                    final error = _validateEmail(value!);
+                    return error;
+                  },
+                ),
+                customSpaces.verticalspace10,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.check_box,
+                      size: 20,
+                      color: AppColors.primaryColor,
                     ),
-                  ),
-                  Text(
-                    'Create an account to continue.',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey.shade400,
-                    ),
-                  ),
-                  customSpaces.verticalspace20,
-                  MobileInputField(
-                    controller: phoneNumberController,
-                  ),
-                  customSpaces.verticalspace10,
-                  CustomInputField(
-                    fieldIcon: Icons.lock_outline,
-                    hintText: 'Enter your prefered username',
-                    controller: userNameController,
-                    validator: (value) {
-                      final error = _validateUserName(value!);
-                      return error;
-                    },
-                  ),
-                  customSpaces.verticalspace10,
-                  CustomInputField(
-                    fieldIcon: Icons.lock_outline,
-                    hintText: 'Enter your password',
-                    controller: passwordController,
-                    validator: (value) {
-                      final error = _validatePassword(value!);
-                      return error;
-                    },
-                  ),
-                  customSpaces.verticalspace10,
-                  CustomInputField(
-                    fieldIcon: Icons.lock_outline,
-                    hintText: 'Confirm password',
-                    controller: confirmPasswordController,
-                    validator: (value) {
-                      final error = _validateConfirmPassword(
-                          value!, passwordController.text);
-                      return error;
-                    },
-                  ),
-                  customSpaces.verticalspace10,
-                  CustomInputField(
-                    fieldIcon: Icons.lock_outline,
-                    hintText: 'Enter your Email',
-                    controller: userEmailController,
-                    validator: (value) {
-                      final error = _validateEmail(value!);
-                      return error;
-                    },
-                  ),
-                  customSpaces.verticalspace10,
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.check_box,
-                        size: 20,
-                        color: AppColors.primaryColor,
-                      ),
-                      customSpaces.horizontalspace20,
-                      CustomSpanTextVertical(
-                        firstText: 'By creating an account, you agree to our',
-                        spanText: 'Terms and Conditions',
-                      )
-                    ],
-                  ),
-                  customSpaces.verticalspace20,
-                  BlocConsumer<LoginBloc, LoginState>(
-                    listener: (context, state) {
-                      if (state is LoginSuccessState) {
-                      
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => OtpVerification(
-                              loginBloc: context.read<LoginBloc>()),
-                        ));
-
-                        showCustomToast(context, 'Otp has Sent Successfully');
-                      } else if (state is LoginFailureState) {
-                        showCustomToast(context, state.message,AppColors.alertColor);
-                      } else if (state is ErrorState) {
-                        showCustomToast(context, state.message, AppColors.alertColor);
-                      }
-                    },
-                    builder: (context, state) {
-                      bool isLoading =
-                          state is LoginLoadingState ? true : false;
-                      return LoadingButton(
-                        isLoading: isLoading,
-                        buttonText: 'Submit',
-                        buttonFunction: () async {
-                          _validatePhoneNumber(
-                              phoneNumberController.text, context);
-                          // Trigger the form validation
-                          if (signupKey.currentState!.validate()) {
-                            final phoneNumber = '+91'+phoneNumberController.text;
-                            final userName = userNameController.text;
-                            final password = passwordController.text;
-                            // ignore: unused_local_variable
-                            final confirmPassword =
-                                confirmPasswordController.text;
-                            final userEmail = userEmailController.text;
-
-                            // You can remove the individual field validations as the form validation will handle them
-                            // No need to check for individual field errors here
-
-                            print('All fields are valid');
-
-                            // Call your signupValidation function here
-                            await context.read<LoginBloc>().signupValidation(
-                                  context: context,
-                                  phoneNumber: phoneNumber,
-                                  userName: userName,
-                                  password: password,
-                                  userEmail: userEmail,
-                                );
-                          }
-                        },
-                      );
-                    },
-                  ),
-                  //customSpaces.verticalspace20,
-                  // Container(
-                  //   child: Row(
-                  //     children: [
-                  //       customSpaces.horizontalspace10,
-                  //       Expanded(
-                  //         child: Container(
-                  //           height: 1,
-                  //           color: Colors.grey.shade300,
-                  //         ),
-                  //       ),
-                  //       Padding(
-                  //         padding: EdgeInsets.symmetric(horizontal: 20),
-                  //         child: Text(
-                  //           'OR',
-                  //           style: TextStyle(
-                  //               fontSize: 14,
-                  //               fontWeight: FontWeight.w500,
-                  //               color: Colors.grey.shade500),
-                  //         ),
-                  //       ),
-                  //       Expanded(
-                  //         child: Container(
-                  //           height: 1,
-                  //           color: Colors.grey.shade300,
-                  //         ),
-                  //       ),
-                  //       customSpaces.horizontalspace10,
-                  //     ],
-                  //   ),
-                  // ),
-                  // customSpaces.verticalspace20,
-                  // Row(
-                  //   children: [
-                  //     Expanded(
-                  //       child: SocialButton(
-                  //           buttonText: 'Sign Up with Google',
-                  //           buttonIcon: 'assets/icons/google-icon.svg'),
-                  //     ),
-                  //     customSpaces.horizontalspace10,
-                  //     Expanded(
-                  //       child: SocialButton(
-                  //           buttonText: 'Sign Up with Facebook',
-                  //           buttonIcon: 'assets/icons/facebook-icon.svg'),
-                  //     ),
-                  //   ],
-                  // ),
-                  customSpaces.verticalspace20,
-                  CustomSpanText(
-                    firstText: 'Already have an account ?',
-                    spanText: 'Login',
-                    spanFunction: () {
+                    customSpaces.horizontalspace20,
+                    CustomSpanTextVertical(
+                      firstText: 'By creating an account, you agree to our',
+                      spanText: 'Terms and Conditions',
+                    )
+                  ],
+                ),
+                customSpaces.verticalspace20,
+                BlocConsumer<LoginBloc, LoginState>(
+                  listener: (context, state) {
+                    if (state is LoginSuccessState) {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
+                        builder: (context) => OtpVerification(
+                            loginBloc: context.read<LoginBloc>()),
                       ));
-                    },
-                  ),
-                  customSpaces.verticalspace40,
-                ],
-              ),
+
+                      showCustomToast(context, 'Otp has Sent Successfully');
+                    } else if (state is LoginFailureState) {
+                      showCustomToast(
+                          context, state.message, AppColors.alertColor);
+                    } else if (state is ErrorState) {
+                      showCustomToast(
+                          context, state.message, AppColors.alertColor);
+                    }
+                  },
+                  builder: (context, state) {
+                    bool isLoading = state is LoginLoadingState ? true : false;
+                    return LoadingButton(
+                      isLoading: isLoading,
+                      buttonText: 'Submit',
+                      buttonFunction: () async {
+                        _validatePhoneNumber(
+                            phoneNumberController.text, context);
+                        // Trigger the form validation
+                        if (signupKey.currentState!.validate()) {
+                          final phoneNumber =
+                              '+91' + phoneNumberController.text;
+                          final userName = userNameController.text;
+                          final password = passwordController.text;
+                          // ignore: unused_local_variable
+                          final confirmPassword =
+                              confirmPasswordController.text;
+                          final userEmail = userEmailController.text;
+
+                          // You can remove the individual field validations as the form validation will handle them
+                          // No need to check for individual field errors here
+
+                          print('All fields are valid');
+
+                          // Call your signupValidation function here
+                          await context.read<LoginBloc>().signupValidation(
+                                context: context,
+                                phoneNumber: phoneNumber,
+                                userName: userName,
+                                password: password,
+                                userEmail: userEmail,
+                              );
+                        }
+                      },
+                    );
+                  },
+                ),
+                //customSpaces.verticalspace20,
+                // Container(
+                //   child: Row(
+                //     children: [
+                //       customSpaces.horizontalspace10,
+                //       Expanded(
+                //         child: Container(
+                //           height: 1,
+                //           color: Colors.grey.shade300,
+                //         ),
+                //       ),
+                //       Padding(
+                //         padding: EdgeInsets.symmetric(horizontal: 20),
+                //         child: Text(
+                //           'OR',
+                //           style: TextStyle(
+                //               fontSize: 14,
+                //               fontWeight: FontWeight.w500,
+                //               color: Colors.grey.shade500),
+                //         ),
+                //       ),
+                //       Expanded(
+                //         child: Container(
+                //           height: 1,
+                //           color: Colors.grey.shade300,
+                //         ),
+                //       ),
+                //       customSpaces.horizontalspace10,
+                //     ],
+                //   ),
+                // ),
+                // customSpaces.verticalspace20,
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: SocialButton(
+                //           buttonText: 'Sign Up with Google',
+                //           buttonIcon: 'assets/icons/google-icon.svg'),
+                //     ),
+                //     customSpaces.horizontalspace10,
+                //     Expanded(
+                //       child: SocialButton(
+                //           buttonText: 'Sign Up with Facebook',
+                //           buttonIcon: 'assets/icons/facebook-icon.svg'),
+                //     ),
+                //   ],
+                // ),
+                customSpaces.verticalspace20,
+                CustomSpanText(
+                  firstText: 'Already have an account ?',
+                  spanText: 'Login',
+                  spanFunction: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => LoginScreen(),
+                    ));
+                  },
+                ),
+                customSpaces.verticalspace40,
+              ],
             ),
           ),
         ),

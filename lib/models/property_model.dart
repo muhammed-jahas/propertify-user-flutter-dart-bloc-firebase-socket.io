@@ -6,6 +6,9 @@ class PropertyModel {
   String? id;
   AgentModel? agent;
   String propertyName;
+  String? propertyRooms;
+  String? propertyBathrooms;
+  String? propertySqft;
   String propertyPrice;
   String propertyCategory;
   String propertyCity;
@@ -28,6 +31,9 @@ class PropertyModel {
     this.id,
     this.agent,
     required this.propertyName,
+     this.propertyRooms,
+    this.propertyBathrooms,
+    this.propertySqft,
     required this.propertyPrice,
     required this.propertyCategory,
     required this.propertyCity,
@@ -50,6 +56,9 @@ class PropertyModel {
       id: json['_id'],
       agent: AgentModel.fromJson(json['agent']),
       propertyName: json['propertyName'],
+      propertyRooms: json['propertyRooms'],
+      propertyBathrooms: json['propertyBathrooms'],
+      propertySqft: json['propertySqft'],
       propertyPrice: json['propertyPrice'],
       propertyCategory: json['propertyCategory'],
       propertyCity: json['propertyCity'],
@@ -73,6 +82,9 @@ class PropertyModel {
     final Map<String, dynamic> data = {
       'agent': agent,
       'propertyName': propertyName,
+      'propertyRooms': propertyRooms,
+      'propertyBathrooms': propertyBathrooms,
+      'propertySqft': propertySqft,
       'propertyPrice': propertyPrice,
       'propertyCategory': propertyCategory,
       'propertyCity': propertyCity,

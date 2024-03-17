@@ -59,11 +59,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           .paymentRequests
                           .where((request) => request.isPaid == true)
                           .toList();
-            
+
                       if (paidPaymentRequests.isEmpty) {
                         return Center(
                           child: Text(
-                            'No Payments',
+                            'No Recent Payments',
                             style: AppFonts.SecondaryColorText20,
                           ),
                         );
@@ -75,7 +75,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               print('In ListView Builder');
                               RequestRecievingModel paymentrequest =
                                   paidPaymentRequests[index];
-            
+
                               return historyWidget(
                                   paymentrequest: paymentrequest);
                             },
@@ -94,8 +94,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 ),
               ),
             ),
-            
-            
           ],
         ),
       ),
@@ -111,7 +109,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
 class historyWidget extends StatelessWidget {
   final RequestRecievingModel paymentrequest;
-   historyWidget({
+  historyWidget({
     super.key,
     required this.paymentrequest,
   });
@@ -127,8 +125,7 @@ class historyWidget extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(4)),
+            color: Colors.white, borderRadius: BorderRadius.circular(4)),
         child: Row(
           children: [
             ClipRRect(
@@ -137,8 +134,8 @@ class historyWidget extends StatelessWidget {
                 bottomLeft: Radius.circular(4),
               ),
               child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10)),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
                 child: Image(
                   height: 105,
                   width: 130,
@@ -168,8 +165,8 @@ class historyWidget extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 6),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(
                             color: AppColors.secondaryColor,
                             borderRadius: BorderRadius.circular(50)),
@@ -205,11 +202,10 @@ class historyWidget extends StatelessWidget {
                     children: [
                       customSpaces.horizontalspace5,
                       Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                           '₹ ${paymentrequest.paymentAmount}',
+                            '₹ ${paymentrequest.paymentAmount}',
                             style: AppFonts.SecondaryColorText18,
                           ),
                           customSpaces.horizontalspace10,

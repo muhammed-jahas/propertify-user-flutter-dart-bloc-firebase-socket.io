@@ -58,7 +58,11 @@ class MobileInputField extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       child: Row(
         children: [
-          Container(child: Flag(Flags.india)),
+          Container(
+              child: Flag(
+            Flags.india,
+            size: 24,
+          )),
           customSpaces.horizontalspace10,
           Text(
             '+91',
@@ -153,7 +157,7 @@ class CustomInputField extends StatelessWidget {
     this.validator,
     this.bgColor,
     this.borderColor,
-    this.enabled=true,
+    this.enabled = true,
     this.onChanged, // Include onChanged in the constructor
     this.editable = false,
     this.onTap, // Include editable in the constructor
@@ -206,7 +210,7 @@ class CustomInputField extends StatelessWidget {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(4),
               borderSide: BorderSide(
-                color: Colors.grey,
+                color: borderColor ?? Colors.grey,
                 width: 1,
               ),
             ),
@@ -220,21 +224,21 @@ class CustomInputField extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(4),
               borderSide: BorderSide(
-                color: Colors.black,
+                color: borderColor ?? Colors.black,
                 width: 1,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(4),
               borderSide: BorderSide(
-                color: Colors.red,
+                color: borderColor ?? Colors.red,
                 width: 1,
               ),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(4),
               borderSide: BorderSide(
-                color: Colors.red,
+                color: borderColor ?? Colors.red,
                 width: 1,
               ),
             ),
@@ -244,9 +248,6 @@ class CustomInputField extends StatelessWidget {
     );
   }
 }
-
-
-
 
 class CustomMultiLineInputField extends StatefulWidget {
   final IconData? fieldIcon;

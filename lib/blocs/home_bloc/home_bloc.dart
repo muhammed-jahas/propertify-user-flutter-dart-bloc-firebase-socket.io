@@ -25,8 +25,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         //     rawData.map((e) => PropertyModel.fromJson(e)).toList();
         final List<PropertyModel> properties = rawData
             .map((e) => PropertyModel.fromJson(e))
-            .where(
-                (property) => !property.isSold!) // Filter out sold properties
+            .where((property) =>
+                !property.isSold! &&
+                property.isApproved!) // Filter out sold properties
             .toList();
         print('Here');
         print('End homeGetAllPropertiesEvent');

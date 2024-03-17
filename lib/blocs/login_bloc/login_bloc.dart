@@ -55,7 +55,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final userData = {'usermobNo': '+91${event.userPhone}'};
     emit(LoginLoadingState());
     final either = await LoginRepo().loginUser(userData);
-    await Future.delayed(Duration(seconds: 10));
+    await Future.delayed(Duration(seconds: 5));
 
     final formattedNumber = '+91' + Utils.formatPhoneNumber(event.userPhone);
     phoneNumber = formattedNumber;
@@ -92,27 +92,28 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   sendOtp(String formattedNumber) async {
     print('Sending Otp');
     await _auth.verifyPhoneNumber(
-        phoneNumber: formattedNumber,
-        timeout: Duration(seconds: 10),
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          UserCredential userCredential =
-              await _auth.signInWithCredential(credential);
-          if (kDebugMode) {
-            print("User Signed in:${userCredential.user?.phoneNumber}");
-          }
-          ;
-          // Get.toNamed('otp_verification', arguments: verificationId);
-        },
-        verificationFailed: (FirebaseAuthException e) {
-          print("Verification failed: ${e.message}");
-        },
-        codeSent: (String verificationIdNew, int? resendToken) {
-          verificationId = verificationIdNew;
-          // Get.toNamed('otp_verification', arguments: verificationId);
-        },
-        codeAutoRetrievalTimeout: (String verificationIdNew) {
-          verificationId = verificationIdNew;
-        });
+      phoneNumber: formattedNumber,
+      timeout: Duration(seconds: 20),
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        UserCredential userCredential =
+            await _auth.signInWithCredential(credential);
+        if (kDebugMode) {
+          print("User Signed in:${userCredential.user?.phoneNumber}");
+        }
+        ;
+        // Get.toNamed('otp_verification', arguments: verificationId);
+      },
+      codeSent: (String verificationIdNew, int? resendToken) {
+        verificationId = verificationIdNew;
+        // Get.toNamed('otp_verification', arguments: verificationId);
+      },
+      codeAutoRetrievalTimeout: (String verificationIdNew) {
+        verificationId = verificationIdNew;
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        print("Verification failed: ${e.message}");
+      },
+    );
   }
 
   signInWithOTP(String verificationId, String otp) async {
@@ -134,8 +135,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       //User Login or Signup Check
 
       print("User signed in: ${userCredential.user?.phoneNumber}");
+      emit(LoginSuccessState(message: 'You are Signed In Successfully'));
     } catch (e) {
       print("Error: $e");
+      // Emit an ErrorState with the message for incorrect OTP
+      emit(ErrorState(
+        message: 'Incorrect OTP',
+      ));
+      return; // Stop the execution here
     }
     isUser
         ? await loginfinal(verificationId, phoneNumber)

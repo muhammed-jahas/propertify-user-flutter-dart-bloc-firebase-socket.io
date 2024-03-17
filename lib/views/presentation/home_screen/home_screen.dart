@@ -1,6 +1,8 @@
 // ignore: unused_import
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:propertify/constants/icons/propertify_icons.dart';
 import 'package:propertify/views/categories%20screen/categories_screen.dart';
@@ -10,12 +12,14 @@ import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/spaces.dart';
 import 'package:propertify/constants/text_styles/text_styles.dart';
 import 'package:propertify/views/presentation/saved_screen/saved_screen.dart';
+import 'package:propertify/views/presentation/search_screen/search_location_screen.dart';
 import 'package:propertify/views/presentation/search_screen/search_screen.dart';
 import 'package:propertify/widgets/buttons/custombuttons.dart';
 import 'package:propertify/widgets/card_widgets/propertyCards/home_page_card.dart';
 import 'package:propertify/widgets/iconbox/customIconBox.dart';
 import 'package:propertify/widgets/input_fileds/customInputFields.dart';
 import 'package:propertify/widgets/location_widget.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../blocs/home_bloc/home_bloc.dart';
 
@@ -54,25 +58,28 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         GestureDetector(
                             onTap: () {
-                              _showBottomSheet(context);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => SearchLocationScreen(),
+                              ));
+                              // _showBottomSheet(context);
                             },
                             child: locationWidget()),
                         Row(
                           children: [
-                            CustomIconBox(
-                              boxheight: 40,
-                              boxwidth: 40,
-                              boxIcon: Icons.refresh,
-                              radius: 8,
-                              boxColor: Colors.transparent,
-                              IconColor: AppColors.secondaryColor,
-                              iconSize: 28,
-                              iconFunction: () {
-                                context
-                                    .read<HomeBloc>()
-                                    .add(getAllProperties());
-                              },
-                            ),
+                            // CustomIconBox(
+                            //   boxheight: 40,
+                            //   boxwidth: 40,
+                            //   boxIcon: Icons.refresh,
+                            //   radius: 8,
+                            //   boxColor: Colors.transparent,
+                            //   IconColor: AppColors.secondaryColor,
+                            //   iconSize: 28,
+                            //   iconFunction: () {
+                            //     context
+                            //         .read<HomeBloc>()
+                            //         .add(getAllProperties());
+                            //   },
+                            // ),
                             CustomIconBox(
                               boxheight: 40,
                               boxwidth: 40,
@@ -107,29 +114,105 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: customPaddings.horizontalpadding20,
-                  child: CustomInputField(
-                    onTap: () {
-                      print('Tapped on the non-editable field');
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SearchScreen(),
-                      ));
-                    },
-                    enabled: false,
-                    editable: true,
-                    bgColor: AppColors.whiteColor,
-                    borderColor: Colors.grey.shade300,
+                GestureDetector(
+                  onTap: () {
+                    print('Tapped on the non-editable field');
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => SearchScreen(),
+                    ));
+                  },
+                  child: Padding(
+                    padding: customPaddings.horizontalpadding20,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.grey.shade200)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              customSpaces.horizontalspace10,
+                              Text(
+                                'Search for Properties',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey.shade400,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                          Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryColor,
+                                borderRadius: BorderRadius.circular(4),
+                                // border: Border.all(color: Colors.grey.shade200),
+                              ),
+                              child: Icon(
+                                Icons.search,
+                                color: Colors.white,
+                              )),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                // Padding(
+                //   padding: customPaddings.horizontalpadding20,
+                //   child: CustomInputField(
+                //     onTap: () {
+                //       print('Tapped on the non-editable field');
+                //       Navigator.of(context).push(MaterialPageRoute(
+                //         builder: (context) => SearchScreen(),
+                //       ));
+                //     },
+                //     enabled: false,
+                //     editable: true,
+                //     bgColor: AppColors.whiteColor,
+                //     borderColor: Colors.grey.shade300,
 
-                    // borderColor: Colors.white,
-                    fieldIcon: Icons.search,
-                    hintText: 'Serach for properties',
-                    // fillColor: AppColors.whiteColor,
-                    // borderColor: Colors.transparent
+                //     // borderColor: Colors.white,
+                //     fieldIcon: Icons.search,
+                //     hintText: 'Serach for properties',
+                //     // fillColor: AppColors.whiteColor,
+                //     // borderColor: Colors.transparent
+                //   ),
+                // ),
+              ],
+            ),
+          ),
+          customSpaces.verticalspace20,
+          Padding(
+            padding: customPaddings.horizontalpadding20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Recently Added',
+                  style: AppFonts.SecondaryColorText18,
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CategoriesScreen(),
+                    ));
+                  },
+                  child: Text(
+                    'See All',
+                    style: AppFonts.PrimaryColorText14,
                   ),
                 ),
               ],
             ),
+          ),
+          customSpaces.verticalspace20,
+          Padding(
+            padding: customPaddings.horizontalpadding20,
+            child: HomePageRecentCardSingle(),
           ),
 
           customSpaces.verticalspace20,
@@ -140,8 +223,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   children: [
                     Expanded(
-                      child: categoryBox(
-                        cateoryname: 'House',
+                      child: CategoryBox(
+                        categoryName: 'House',
                         imagePath: 'assets/images/categories/house.jpg',
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
@@ -149,12 +232,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 CategoriesScreen(category: 'House'),
                           ));
                         },
+                        isLoading: _isLoadingCategories(context),
                       ),
                     ),
                     customSpaces.horizontalspace10,
                     Expanded(
-                      child: categoryBox(
-                        cateoryname: 'Apartment',
+                      child: CategoryBox(
+                        categoryName: 'Apartment',
                         imagePath: 'assets/images/categories/apartment.jpg',
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
@@ -162,6 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 CategoriesScreen(category: 'Apartment'),
                           ));
                         },
+                        isLoading: _isLoadingCategories(context),
                       ),
                     ),
                   ],
@@ -170,8 +255,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   children: [
                     Expanded(
-                      child: categoryBox(
-                        cateoryname: 'Office',
+                      child: CategoryBox(
+                        categoryName: 'Office',
                         imagePath: 'assets/images/categories/office.jpg',
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
@@ -179,12 +264,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 CategoriesScreen(category: 'Office'),
                           ));
                         },
+                        isLoading: _isLoadingCategories(context),
                       ),
                     ),
                     customSpaces.horizontalspace10,
                     Expanded(
-                      child: categoryBox(
-                        cateoryname: 'Other',
+                      child: CategoryBox(
+                        categoryName: 'Other',
                         imagePath: 'assets/images/categories/other.jpg',
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
@@ -192,6 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 CategoriesScreen(category: 'Other'),
                           ));
                         },
+                        isLoading: _isLoadingCategories(context),
                       ),
                     ),
                   ],
@@ -199,6 +286,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
+
           // customSpaces.verticalspace20,
           //Three Boxes
           // Padding(
@@ -367,38 +455,60 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
+
+  bool _isLoadingCategories(BuildContext context) {
+    final state = context.watch<HomeBloc>().state;
+    return state is HomeLoadingState;
+  }
 }
 
 // ignore: must_be_immutable
-class categoryBox extends StatelessWidget {
-  String? cateoryname;
-  String? imagePath;
-  VoidCallback? onTap;
+class CategoryBox extends StatelessWidget {
+  final String? categoryName;
+  final String? imagePath;
+  final VoidCallback? onTap;
+  final bool isLoading;
 
-  categoryBox({
+  const CategoryBox({
     Key? key,
-    this.cateoryname,
+    this.categoryName,
     this.imagePath,
     this.onTap,
+    this.isLoading = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        height: 50,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          image: DecorationImage(
-            image: AssetImage(imagePath ?? 'assets/images/banner-1.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
-            child:
-                Text(cateoryname ?? '', style: AppFonts.WhiteColorText14Bold)),
-      ),
-    );
+    return isLoading
+        ? Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+          )
+        : InkWell(
+            onTap: onTap,
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                image: DecorationImage(
+                  image: AssetImage(imagePath ?? 'assets/images/banner-1.jpg'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  categoryName ?? '',
+                  style: AppFonts.WhiteColorText14Bold,
+                ),
+              ),
+            ),
+          );
   }
 }

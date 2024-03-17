@@ -1,5 +1,6 @@
 import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:propertify/constants/icons/propertify_icons.dart';
 import 'package:propertify/constants/colors/colors.dart';
@@ -32,11 +33,21 @@ class PropertyDetailsScreen extends StatefulWidget {
 class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
   String? userId;
   bool? isFavourite;
-
+  GoogleMapController? _controller;
+  String? mapStyle;
   @override
   void initState() {
     super.initState();
     _initializeData();
+    _loadMapStyle();
+  }
+
+  void _loadMapStyle() async {
+    String jsonString = await DefaultAssetBundle.of(context)
+        .loadString('assets/map_style.json');
+    setState(() {
+      mapStyle = jsonString;
+    });
   }
 
   Future<void> _initializeData() async {
@@ -252,17 +263,19 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                         children: [
                           IconwithText(
                             contentIcon: PropertifyIcons.sqft,
-                            contentText: '1848 sqft',
+                            contentText: '${widget.property.propertySqft} Sqft',
                           ),
                           customSpaces.horizontalspace20,
                           IconwithText(
                             contentIcon: PropertifyIcons.bed,
-                            contentText: '3 Rooms',
+                            contentText:
+                                '${widget.property.propertyRooms} Rooms',
                           ),
                           customSpaces.horizontalspace20,
                           IconwithText(
                             contentIcon: Icons.shower_outlined,
-                            contentText: '2 Bathrooms',
+                            contentText:
+                                '${widget.property.propertyBathrooms} Bathrooms',
                           ),
                         ],
                       ),
@@ -393,6 +406,10 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                               child: Container(
                                 height: 200,
                                 child: GoogleMap(
+                                  onMapCreated: (controller) {
+                                    _controller = controller;
+                                    _controller!.setMapStyle(mapStyle!);
+                                  },
                                   padding: EdgeInsets.all(10),
                                   initialCameraPosition: CameraPosition(
                                     target: LatLng(
@@ -401,7 +418,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                                       double.parse(
                                           widget.property.longitude ?? '0.0'),
                                     ),
-                                    zoom: 10,
+                                    zoom: 14,
                                   ),
                                   markers: <Marker>[
                                     Marker(
@@ -427,7 +444,13 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                             style: AppFonts.SecondaryColorText20,
                           ),
                           customSpaces.verticalspace20,
-                          ListView.builder(
+                          GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10,
+                                    childAspectRatio: 1 / 1),
                             padding: EdgeInsets.all(0),
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
@@ -438,14 +461,27 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                               Icon? amenityIcon = amenityIcons[amenity];
 
                               return Padding(
-                                padding: EdgeInsets.symmetric(vertical: 10),
+                                padding: EdgeInsets.symmetric(vertical: 5),
                                 child: Container(
-                                  color: Colors.grey.shade200,
-                                  child: ListTile(
-                                    leading:
-                                        amenityIcon, // Use the icon as leading
-                                    title: Text(amenity),
-                                  ),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      // color: Colors.grey.shade200,
+                                      border: Border.all(
+                                        color: Colors.grey.shade400,
+                                      )),
+                                  child: Container(
+                                      child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        child: amenityIcon,
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(amenity)
+                                    ],
+                                  )),
                                 ),
                               );
                             },

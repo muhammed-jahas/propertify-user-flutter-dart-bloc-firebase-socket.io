@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:propertify/blocs/search_bloc/search_bloc.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
@@ -20,17 +21,16 @@ class _SearchScreenState extends State<SearchScreen> {
   final SearchController = TextEditingController();
   @override
   void initState() {
-    super.initState();
-   
     SearchController.text = widget.searchQuery ?? '';
     if (widget.searchQuery != null) {
       context
           .read<SearchBloc>()
           .add(SearchInputChangedEvent(widget.searchQuery!));
-    }else {
+    } else {
       _fetchAllProperties();
     }
     // Fetch all properties when the screen is first opened
+    super.initState();
   }
 
   void _fetchAllProperties() {
@@ -43,19 +43,23 @@ class _SearchScreenState extends State<SearchScreen> {
       body: SafeArea(
           child: Column(
         children: [
-          customSpaces.verticalspace20,
-          Padding(
-            padding: customPaddings.horizontalpadding20,
-            child: CustomInputField(
-                onChanged: (searchInput) {
-                  context
-                      .read<SearchBloc>()
-                      .add(SearchInputChangedEvent(searchInput));
-                  print(searchInput);
-                },
-                fieldIcon: Icons.search,
-                hintText: 'Serach for properties',
-                controller: SearchController),
+          // customSpaces.verticalspace20,
+          CustomInputField(
+            onChanged: (searchInput) {
+              context
+                  .read<SearchBloc>()
+                  .add(SearchInputChangedEvent(searchInput));
+              print(searchInput);
+            },
+            fieldIcon: Icons.search,
+            hintText: 'Serach for properties',
+            controller: SearchController,
+            borderColor: Colors.transparent,
+            bgColor: Colors.white,
+          ),
+          Divider(
+            height: 1,
+            color: Colors.grey.shade400,
           ),
           customSpaces.verticalspace20,
           Expanded(
@@ -73,10 +77,12 @@ class _SearchScreenState extends State<SearchScreen> {
                     );
                   } else if (state is SearchLoadedSuccessState) {
                     if (state.properties.isEmpty) {
-                        // Show 'No Results Found' when the list is empty
-                        return Center(
-                          child: Text('No Properties Found', style: AppFonts.SecondaryColorText20),
-                        ); }
+                      // Show 'No Results Found' when the list is empty
+                      return Center(
+                        child: Text('No Properties Found',
+                            style: AppFonts.SecondaryColorText20),
+                      );
+                    }
                     return Container(
                       child: GridView.builder(
                         physics: NeverScrollableScrollPhysics(),

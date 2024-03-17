@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:propertify/blocs/login_bloc/login_bloc.dart';
+import 'package:propertify/resources/components/custom_toast.dart';
 import 'package:propertify/views/presentation/navigation/navigation.dart';
 import 'package:propertify/constants/colors/colors.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
@@ -12,7 +13,7 @@ import 'package:propertify/widgets/input_fileds/customInputFields.dart';
 import 'package:propertify/widgets/text_models/customSpanTextModels.dart';
 
 class OtpVerification extends StatefulWidget {
- final LoginBloc loginBloc;
+  final LoginBloc loginBloc;
 
   OtpVerification({Key? key, required this.loginBloc}) : super(key: key);
 
@@ -74,22 +75,49 @@ class _OtpVerificationState extends State<OtpVerification> {
                 ),
                 customSpaces.verticalspace20,
                 BlocConsumer<LoginBloc, LoginState>(
-                  // bloc: loginBloc,
-                  listener: (context, state) {},
+                  listener: (context, state) {
+                    if (state is LoginFailureState) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    } else if (state is LoginSuccessState) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
+                          backgroundColor: Colors.green
+                          
+                          
+                          ,
+                        ),
+                      );
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NavigationItems(),
+                        ),
+                        (route) => false,
+                      );
+                    } else if (state is ErrorState) {
+                      showCustomToast(context, state.message, Colors.red);
+                    }
+                  },
                   builder: (context, state) {
-                    return PrimaryButton(
-                      buttonText: 'Verify',
-                      buttonFunction: () {
-                        widget.loginBloc.signInWithOTP(verificationId, otpController.text);
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NavigationItems(),
-                            ),
-                            (route) => false,
-                          );
-                      },
-                    );
+                    if (state is LoginLoadingState) {
+                      // Show loading indicator here if needed
+                      return CircularProgressIndicator();
+                    } else {
+                      return PrimaryButton(
+                        buttonText: 'Verify',
+                        buttonFunction: () async {
+                          await widget.loginBloc.signInWithOTP(
+                              verificationId, otpController.text);
+                          // Remove navigation logic from here
+                        },
+                      );
+                    }
                   },
                 ),
                 customSpaces.verticalspace20,
@@ -114,5 +142,4 @@ class _OtpVerificationState extends State<OtpVerification> {
   }
 
   //Sign in using OTP
-  
 }

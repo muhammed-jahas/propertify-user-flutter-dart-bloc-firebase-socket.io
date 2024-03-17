@@ -31,6 +31,14 @@ class WelcomeScreen extends StatelessWidget {
               ),
             ),
             customSpaces.verticalspace20,
+            Image(
+              image: AssetImage(
+                'assets/images/logo/propertify-logo-full.png',
+              ),
+              fit: BoxFit.cover,
+              height: 50,
+            ),
+            customSpaces.verticalspace20,
             Text(
               'The perfect choice\nfor your stay',
               textAlign: TextAlign.center,
@@ -103,8 +111,8 @@ class WelcomeScreen extends StatelessWidget {
                   firstText: 'Don’t have an account ?',
                   spanText: 'Sign Up',
                   spanFunction: () {
-                    //    _requestPermissionforsignup(context);
-                    //  ;
+                    _requestPermissionforsignup(context);
+                    ;
                   },
                 ),
               ],

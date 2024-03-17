@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:propertify/blocs/login_bloc/login_bloc.dart';
 import 'package:propertify/resources/components/custom_toast.dart';
@@ -45,18 +46,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 customSpaces.verticalspace20,
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  height: 50,
-                  width: 50,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(
-                      Icons.arrow_back,
-                      size: 24,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    height: 50,
+                    width: 50,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.arrow_back,
+                        size: 24,
+                      ),
                     ),
                   ),
                 ),
@@ -87,13 +93,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (state is LoginSuccessState) {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => OtpVerification(
-                            loginBloc: context.read<LoginBloc>()),
+                          loginBloc: context.read<LoginBloc>(),
+                        ),
                       ));
                       showCustomToast(context, 'Otp has Sent Successfully');
                     } else if (state is LoginFailureState) {
                       showCustomToast(context, state.message);
                     } else if (state is ErrorState) {
-                      showCustomToast(context, state.message);
+                      // Show custom toast message for incorrect OTP
+                      showCustomToast(context, 'Incorrect OTP');
                     }
                   },
                   builder: (context, state) {
@@ -103,7 +111,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       buttonText: 'Send OTP',
                       buttonFunction: () async {
                         await context.read<LoginBloc>().phoneNumberValidation(
-                            context, phoneNumberController.text);
+                              context,
+                              phoneNumberController.text,
+                            );
                       },
                     );
                   },
@@ -113,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   firstText: 'Don’t have an account ?',
                   spanText: 'Sign Up',
                   spanFunction: () {
-                    Navigator.of(context).pushReplacement(
+                    Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => SignUpScreen(),
                       ),

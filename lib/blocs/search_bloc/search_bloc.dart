@@ -60,6 +60,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       },
     );
   }
+
   void _fetchAllProperties(event, emit) async {
     emit(SearchLoadingState());
     await Future.delayed(Duration(seconds: 1));
@@ -73,8 +74,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       (response) {
         if (response['status'] == 'success') {
           final List rawData = response['properties'];
-          final List<PropertyModel> properties =
-              rawData.map((json) => PropertyModel.fromJson(json)).toList();
+          final List<PropertyModel> properties = rawData
+              .map((e) => PropertyModel.fromJson(e))
+              .where((property) =>
+                  !property.isSold! &&
+                  property.isApproved!) // Filter out sold properties
+              .toList();
           allProperties = properties;
           print('Fetched ${properties.length} properties');
           emit(SearchLoadedSuccessState(properties: properties));
@@ -85,5 +90,4 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       },
     );
   }
-
 }

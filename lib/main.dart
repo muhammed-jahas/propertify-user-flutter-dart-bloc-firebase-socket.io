@@ -14,7 +14,12 @@ import 'package:propertify/blocs/property_bloc/property_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+      options: FirebaseOptions(
+          apiKey: "AIzaSyAHRSPTqixGbXaTQhV1Nqc3kRQmWRLN9N8",
+          appId: "1:799901425003:android:39369c35e6f89bb478402e",
+          messagingSenderId: "799901425003",
+          projectId: "propertify-user"));
   await SharedPref.instance.initStorage();
   runApp(Propertify());
 }
@@ -24,7 +29,6 @@ class Propertify extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -33,11 +37,12 @@ class Propertify extends StatelessWidget {
 
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor:
-            systemBrightness == Brightness.light ? Colors.transparent : Colors.black,
+        statusBarColor: systemBrightness == Brightness.light
+            ? Colors.transparent
+            : Colors.transparent,
         statusBarIconBrightness: systemBrightness == Brightness.light
             ? Brightness.dark
-            : Brightness.light,
+            : Brightness.dark,
         statusBarBrightness: systemBrightness,
         systemNavigationBarColor:
             systemBrightness == Brightness.light ? Colors.white : Colors.black,

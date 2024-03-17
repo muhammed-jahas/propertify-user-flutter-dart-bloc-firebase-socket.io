@@ -38,64 +38,62 @@ class SettingsScreen extends StatelessWidget {
             ),
             customSpaces.verticalspace20,
             Padding(
-            padding: customPaddings.horizontalpadding20,
-            child: ListTile(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SettingsScreen(),
-                ));
-              },
-              contentPadding: EdgeInsets.all(0),
-              leading: Text(
-                'Dark Mode',
-                style: AppFonts.SecondaryColorText20,
-              ),
-              trailing: Icon(
-                PropertifyIcons.toggle,
-                color: AppColors.secondaryColor,
-              ),
-            ),
-          ),
-          Padding(
-            padding: customPaddings.horizontalpadding20,
-            child: ListTile(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SettingsScreen(),
-                ));
-              },
-              contentPadding: EdgeInsets.all(0),
-              leading: Text(
-                'Clear App Data',
-                style: AppFonts.SecondaryColorText20,
-              ),
-              trailing: Icon(
-                PropertifyIcons.delete,
-                color: AppColors.secondaryColor,
+              padding: customPaddings.horizontalpadding20,
+              child: ListTile(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SettingsScreen(),
+                  ));
+                },
+                contentPadding: EdgeInsets.all(0),
+                leading: Text(
+                  'Dark Mode',
+                  style: AppFonts.SecondaryColorText20,
+                ),
+                trailing: Icon(
+                  PropertifyIcons.toggle,
+                  color: AppColors.secondaryColor,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: customPaddings.horizontalpadding20,
-            child: ListTile(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SettingsScreen(),
-                ));
-              },
-              contentPadding: EdgeInsets.all(0),
-              leading: Text(
-                'Sign Out',
-                style: AppFonts.RedColorText20,
-              ),
-              trailing: Icon(
-                PropertifyIcons.logout,
-                color: AppColors.alertColor,
+            Padding(
+              padding: customPaddings.horizontalpadding20,
+              child: ListTile(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SettingsScreen(),
+                  ));
+                },
+                contentPadding: EdgeInsets.all(0),
+                leading: Text(
+                  'Clear App Data',
+                  style: AppFonts.SecondaryColorText20,
+                ),
+                trailing: Icon(
+                  PropertifyIcons.delete,
+                  color: AppColors.secondaryColor,
+                ),
               ),
             ),
-          ),
-
-            
+            Padding(
+              padding: customPaddings.horizontalpadding20,
+              child: ListTile(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SettingsScreen(),
+                  ));
+                },
+                contentPadding: EdgeInsets.all(0),
+                leading: Text(
+                  'Sign Out',
+                  style: AppFonts.RedColorText20,
+                ),
+                trailing: Icon(
+                  PropertifyIcons.logout,
+                  color: AppColors.alertColor,
+                ),
+              ),
+            ),
           ],
         ),
       ),
