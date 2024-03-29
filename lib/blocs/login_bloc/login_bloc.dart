@@ -91,6 +91,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   sendOtp(String formattedNumber) async {
     print('Sending Otp');
+    // await _auth.setSettings(
+    //   appVerificationDisabledForTesting: true,
+    //   forceRecaptchaFlow: true,
+    // );
     await _auth.verifyPhoneNumber(
       phoneNumber: formattedNumber,
       timeout: Duration(seconds: 20),
@@ -105,6 +109,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       },
       codeSent: (String verificationIdNew, int? resendToken) {
         verificationId = verificationIdNew;
+        
         // Get.toNamed('otp_verification', arguments: verificationId);
       },
       codeAutoRetrievalTimeout: (String verificationIdNew) {
@@ -113,6 +118,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       verificationFailed: (FirebaseAuthException e) {
         print("Verification failed: ${e.message}");
       },
+
     );
   }
 
