@@ -13,7 +13,6 @@ import 'package:propertify/views/presentation/profile_screen/app_info.dart';
 import 'package:propertify/views/presentation/profile_screen/help_.dart';
 import 'package:propertify/views/presentation/profile_screen/privacy&policy.dart';
 import 'package:propertify/views/presentation/profile_screen/terms&conditions.dart';
-import 'package:propertify/views/presentation/search_screen/search_screen.dart';
 import 'package:propertify/views/presentation/welcome_screen/welcome_screen.dart';
 import 'package:propertify/widgets/buttons/custombuttons.dart';
 import 'package:propertify/widgets/input_fileds/customInputFields.dart';

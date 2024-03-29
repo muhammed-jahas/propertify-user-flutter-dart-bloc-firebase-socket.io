@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:propertify/constants/colors/colors.dart';
 import 'package:propertify/repositories/login_repo/login_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:propertify/repositories/signup_repo/signup_repo.dart';
@@ -75,9 +76,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   phoneNumberValidation(BuildContext context, String phoneNumber) {
     if (phoneNumber.trim().isEmpty || phoneNumber.isEmpty) {
-      return showCustomToast(context, 'Please Enter Your Phone Number');
+      return showCustomToast(
+          context, 'Please Enter Your Phone Number', AppColors.alertColor);
     } else if (phoneNumber.trim().length != 10) {
-      return showCustomToast(context, 'Please Enter Correct Phone Number');
+      return showCustomToast(
+          context, 'Please Enter Correct Phone Number', AppColors.alertColor);
     } else {
       loginUser(context, phoneNumber);
     }
@@ -91,10 +94,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   sendOtp(String formattedNumber) async {
     print('Sending Otp');
-    // await _auth.setSettings(
-    //   appVerificationDisabledForTesting: true,
-    //   forceRecaptchaFlow: true,
-    // );
+
     await _auth.verifyPhoneNumber(
       phoneNumber: formattedNumber,
       timeout: Duration(seconds: 20),
@@ -109,7 +109,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       },
       codeSent: (String verificationIdNew, int? resendToken) {
         verificationId = verificationIdNew;
-        
+
         // Get.toNamed('otp_verification', arguments: verificationId);
       },
       codeAutoRetrievalTimeout: (String verificationIdNew) {
@@ -118,11 +118,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       verificationFailed: (FirebaseAuthException e) {
         print("Verification failed: ${e.message}");
       },
-
     );
   }
 
   signInWithOTP(String verificationId, String otp) async {
+    emit(LoginLoadingState());
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId,
@@ -141,14 +141,31 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       //User Login or Signup Check
 
       print("User signed in: ${userCredential.user?.phoneNumber}");
+      // ignore: invalid_use_of_visible_for_testing_member
       emit(LoginSuccessState(message: 'You are Signed In Successfully'));
     } catch (e) {
+      if (otp.isEmpty) {
+        emit(ErrorState(
+          message: 'Please enter OTP',
+        ));
+        return;
+      }
+      if (otp.length < 6 || otp.length > 6) {
+        emit(ErrorState(
+          message: 'Please enter correct OTP',
+        ));
+        return;
+      } else {
+        emit(ErrorState(
+          message: 'Incorrect OTP',
+        ));
+        return;
+      }
       print("Error: $e");
       // Emit an ErrorState with the message for incorrect OTP
-      emit(ErrorState(
-        message: 'Incorrect OTP',
-      ));
-      return; // Stop the execution here
+      // ignore: invalid_use_of_visible_for_testing_member
+
+      // Stop the execution here
     }
     isUser
         ? await loginfinal(verificationId, phoneNumber)

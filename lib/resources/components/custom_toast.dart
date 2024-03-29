@@ -12,7 +12,7 @@ showCustomToast(BuildContext context, String message, [Color? bgColor]) async {
       color: Colors.white,
     ),
     backgroundColor: bgColor ?? Colors.blue,
-    duration: Duration(seconds: 3),
+    duration: Duration(seconds: 2),
   )..show(context);
 }
 

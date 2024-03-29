@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,10 +40,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 customSpaces.verticalspace40,
                 customSpaces.verticalspace40,
                 Center(
-                  child: Image(
-                    image: AssetImage('assets/images/welcome-image.png'),
-                    fit: BoxFit.cover,
-                    height: 300,
+                  child: Hero(
+                    tag: 'herobg',
+                    child: Image(
+                      image: AssetImage('assets/images/welcome-image.png'),
+                      fit: BoxFit.cover,
+                      height: 300,
+                    ),
                   ),
                 ),
                 customSpaces.verticalspace20,
@@ -84,8 +88,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 customSpaces.verticalspace20,
-                MobileInputField(
-                  controller: phoneNumberController,
+                Hero(
+                  tag: 'inputfield',
+                  child: MobileInputField(
+                    controller: phoneNumberController,
+                  ),
                 ),
                 customSpaces.verticalspace20,
                 BlocConsumer<LoginBloc, LoginState>(
@@ -98,23 +105,29 @@ class _LoginScreenState extends State<LoginScreen> {
                       ));
                       showCustomToast(context, 'Otp has Sent Successfully');
                     } else if (state is LoginFailureState) {
-                      showCustomToast(context, state.message);
+                      showCustomToast(
+                        context,
+                        state.message,
+                      );
                     } else if (state is ErrorState) {
                       // Show custom toast message for incorrect OTP
-                      showCustomToast(context, 'Incorrect OTP');
+                      showCustomToast(context, 'Something went wrong');
                     }
                   },
                   builder: (context, state) {
                     bool isLoading = state is LoginLoadingState ? true : false;
-                    return LoadingButton(
-                      isLoading: isLoading,
-                      buttonText: 'Send OTP',
-                      buttonFunction: () async {
-                        await context.read<LoginBloc>().phoneNumberValidation(
-                              context,
-                              phoneNumberController.text,
-                            );
-                      },
+                    return Hero(
+                      tag: 'button',
+                      child: LoadingButton(
+                        isLoading: isLoading,
+                        buttonText: 'Send OTP',
+                        buttonFunction: () async {
+                          await context.read<LoginBloc>().phoneNumberValidation(
+                                context,
+                                phoneNumberController.text,
+                              );
+                        },
+                      ),
                     );
                   },
                 ),

@@ -174,6 +174,7 @@ class _SearchLocationScreenState extends State<SearchLocationScreen> {
               GoogleMap(
                 onMapCreated: (controller) {
                   _controller = controller;
+                  // ignore: deprecated_member_use
                   _controller!.setMapStyle(mapStyle!);
                 },
                 initialCameraPosition: CameraPosition(

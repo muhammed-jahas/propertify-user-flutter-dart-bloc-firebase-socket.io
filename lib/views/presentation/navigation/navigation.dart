@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:propertify/constants/icons/propertify_icons.dart';
-import 'package:propertify/views/coming_soon/coming_soon.dart';
 import 'package:propertify/views/history_screen/history_screen.dart';
 import 'package:propertify/views/presentation/home_screen/home_screen.dart';
 import 'package:propertify/constants/colors/colors.dart';

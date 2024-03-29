@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:propertify/constants/colors/colors.dart';
 import 'package:propertify/constants/icons/propertify_icons.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
@@ -43,19 +44,22 @@ class HomePageRecentCradSingle extends StatelessWidget {
           children: [
             Stack(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    topRight: Radius.circular(8),
+                Hero(
+                  tag: 'cover',
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
+                    ),
+                    child: property?.propertyCoverPicture?.path != null
+                        ? Image.network(
+                            '${property!.propertyCoverPicture!.path}',
+                            height: cardHeight ?? 200,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          )
+                        : Placeholder(), // Show a Placeholder widget or some other fallback
                   ),
-                  child: property?.propertyCoverPicture?.path != null
-                      ? Image.network(
-                          '${property!.propertyCoverPicture!.path}',
-                          height: cardHeight ?? 200,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        )
-                      : Placeholder(), // Show a Placeholder widget or some other fallback
                 ),
                 Positioned(
                   // top: 0,

@@ -30,12 +30,15 @@ class _SplashScreenState extends State<SplashScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: Image(
-              image: AssetImage(
-                'assets/images/logo/propertify-logo.png',
+            child: Hero(
+              tag: 'splashlogo',
+              child: Image(
+                image: AssetImage(
+                  'assets/images/logo/propertify-logo.png',
+                ),
+                fit: BoxFit.cover,
+                height: 140,
               ),
-              fit: BoxFit.cover,
-              height: 140,
             ),
           )
         ],

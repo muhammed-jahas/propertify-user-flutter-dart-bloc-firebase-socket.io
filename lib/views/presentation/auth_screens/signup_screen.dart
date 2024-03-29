@@ -7,6 +7,7 @@ import 'package:propertify/constants/spaces%20&%20paddings/spaces.dart';
 import 'package:propertify/resources/components/custom_toast.dart';
 import 'package:propertify/views/presentation/auth_screens/login_screen.dart';
 import 'package:propertify/views/presentation/auth_screens/otp_verification.dart';
+import 'package:propertify/views/presentation/profile_screen/terms&conditions.dart';
 import 'package:propertify/widgets/buttons/custombuttons.dart';
 import 'package:propertify/widgets/input_fileds/customInputFields.dart';
 import 'package:propertify/widgets/text_models/customSpanTextModels.dart';
@@ -106,6 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     customSpaces.verticalspace20,
                     CustomInputField(
+                      
                       fieldIcon: Icons.lock_outline,
                       hintText: 'Confirm password',
                       controller: confirmPasswordController,
@@ -138,9 +140,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           },
                         ),
                         customSpaces.horizontalspace5,
-                        CustomSpanTextVertical(
-                          firstText: 'By creating an account, you agree to our',
-                          spanText: 'Terms and Conditions',
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => TermsConditions(),
+                            ));
+                          },
+                          child: CustomSpanTextVertical(
+                            firstText:
+                                'By creating an account, you agree to our',
+                            spanText: 'Terms and Conditions',
+                          ),
                         )
                       ],
                     ),
@@ -177,6 +187,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   '+91' + phoneNumberController.text;
                               final userName = userNameController.text;
                               final password = passwordController.text;
+                              // ignore: unused_local_variable
                               final confirmPassword =
                                   confirmPasswordController.text;
                               final userEmail = userEmailController.text;

@@ -159,7 +159,9 @@ class PrimaryButtonwithIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 54,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+      ),
       width: double.maxFinite,
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -183,8 +185,9 @@ class PrimaryButtonwithIcon extends StatelessWidget {
             ],
           ),
           style: ButtonStyle(
-            elevation: MaterialStatePropertyAll(0),
-          ),
+              elevation: MaterialStatePropertyAll(0),
+              backgroundColor:
+                  MaterialStatePropertyAll(AppColors.primaryColor)),
         ),
       ),
     );

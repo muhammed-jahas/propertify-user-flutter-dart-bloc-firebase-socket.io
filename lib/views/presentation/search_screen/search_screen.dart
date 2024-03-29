@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:propertify/blocs/search_bloc/search_bloc.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
@@ -9,6 +8,7 @@ import 'package:propertify/models/property_model.dart';
 import 'package:propertify/widgets/card_widgets/propertyCards/home_page_single_card.dart';
 import 'package:propertify/widgets/input_fileds/customInputFields.dart';
 
+// ignore: must_be_immutable
 class SearchScreen extends StatefulWidget {
   String? searchQuery;
   SearchScreen({super.key, this.searchQuery});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/spaces.dart';
 import 'package:propertify/constants/text_styles/text_styles.dart';
-
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 // class InboxScreen extends StatelessWidget {
 //   const InboxScreen({super.key});
 
@@ -43,10 +43,8 @@ import 'package:propertify/constants/text_styles/text_styles.dart';
 //   }
 // }
 
-// socket_manager.dart
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-// main.dart
-import 'package:flutter/material.dart';
+
+
 
 class SocketManager {
   static final SocketManager _instance = SocketManager._internal();

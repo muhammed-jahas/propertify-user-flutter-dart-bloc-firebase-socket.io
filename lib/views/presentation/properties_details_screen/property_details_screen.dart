@@ -88,18 +88,21 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                   children: [
                     Stack(
                       children: [
-                        Container(
-                          width: double.maxFinite,
-                          height: MediaQuery.of(context).size.height * .3,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(40),
-                              bottomRight: Radius.circular(40),
-                            ),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                  '${widget.property.propertyCoverPicture!.path}'),
+                        Hero(
+                          tag: 'cover',
+                          child: Container(
+                            width: double.maxFinite,
+                            height: MediaQuery.of(context).size.height * .3,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(40),
+                                bottomRight: Radius.circular(40),
+                              ),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                    '${widget.property.propertyCoverPicture!.path}'),
+                              ),
                             ),
                           ),
                         ),
@@ -804,9 +807,10 @@ class IconwithText extends StatelessWidget {
 
 Map<String, Icon> amenityIcons = {
   'Gym': Icon(Icons.fitness_center,
-      color: AppColors.secondaryColor), // Specify color
+      color: AppColors.secondaryColor),
   'Swimming Pool':
-      Icon(Icons.pool, color: AppColors.secondaryColor), // Specify color
-  'Parking': Icon(Icons.wifi, color: AppColors.secondaryColor), // Specify color
-  // Add more mappings as needed
+      Icon(Icons.pool, color: AppColors.secondaryColor),
+  'Parking': Icon(Icons.wifi, color: AppColors.secondaryColor),
+  'Furnished': Icon(Icons.meeting_room_outlined, color: AppColors.secondaryColor),
+  'A/C': Icon(Icons.ac_unit_rounded, color: AppColors.secondaryColor),
 };

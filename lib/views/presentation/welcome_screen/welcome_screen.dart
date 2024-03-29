@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:propertify/views/presentation/auth_screens/login_screen.dart';
 import 'package:propertify/constants/colors/colors.dart';
 import 'package:propertify/constants/spaces%20&%20paddings/paddings.dart';
@@ -24,19 +26,25 @@ class WelcomeScreen extends StatelessWidget {
             customSpaces.verticalspace40,
             customSpaces.verticalspace40,
             Center(
-              child: Image(
-                image: AssetImage('assets/images/welcome-image.png'),
-                fit: BoxFit.cover,
-                height: 300,
+              child: Hero(
+                tag: 'herobg',
+                child: Image(
+                  image: AssetImage('assets/images/welcome-image.png'),
+                  fit: BoxFit.cover,
+                  height: 300,
+                ),
               ),
             ),
             customSpaces.verticalspace20,
-            Image(
-              image: AssetImage(
-                'assets/images/logo/propertify-logo-full.png',
+            Hero(
+              tag: 'splashlogo',
+              child: Image(
+                image: AssetImage(
+                  'assets/images/logo/propertify-logo-full.png',
+                ),
+                fit: BoxFit.cover,
+                height: 60,
               ),
-              fit: BoxFit.cover,
-              height: 50,
             ),
             customSpaces.verticalspace20,
             Text(
@@ -99,12 +107,15 @@ class WelcomeScreen extends StatelessWidget {
             customSpaces.verticalspace20,
             Column(
               children: [
-                PrimaryButtonwithIcon(
-                  buttonText: 'Login with Phone Number',
-                  buttonIcon: Icons.phone,
-                  buttonFunction: () {
-                    _requestPermission(context);
-                  },
+                Hero(
+                  tag: 'button',
+                  child: PrimaryButtonwithIcon(
+                    buttonText: 'Login with Phone Number',
+                    buttonIcon: Icons.phone,
+                    buttonFunction: () {
+                      _requestPermission(context);
+                    },
+                  ),
                 ),
                 customSpaces.verticalspace40,
                 CustomSpanText(
