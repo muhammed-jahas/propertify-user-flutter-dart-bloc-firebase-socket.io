@@ -185,6 +185,84 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           customSpaces.verticalspace20,
+
+          Padding(
+            padding: customPaddings.horizontalpadding20,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: CategoryBox(
+                        categoryName: 'House',
+                        categoryIcon: PropertifyIcons.home,
+                        imagePath: 'assets/images/categories/house.jpg',
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CategoriesScreen(
+                              category: 'House',
+                            ),
+                          ));
+                        },
+                        isLoading: _isLoadingCategories(context),
+                      ),
+                    ),
+                    customSpaces.horizontalspace10,
+                    Expanded(
+                      child: CategoryBox(
+                        categoryName: 'Apartment',
+                        categoryIcon: Icons.apartment_rounded,
+                        imagePath: 'assets/images/categories/apartment.jpg',
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                CategoriesScreen(category: 'Apartment'),
+                          ));
+                        },
+                        isLoading: _isLoadingCategories(context),
+                      ),
+                    ),
+                  ],
+                ),
+                customSpaces.verticalspace10,
+                Row(
+                  children: [
+                    Expanded(
+                      child: CategoryBox(
+                        categoryName: 'Office',
+                        categoryIcon: Icons.work_outline_rounded,
+                        imagePath: 'assets/images/categories/office.jpg',
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CategoriesScreen(
+                              category: 'Office',
+                            ),
+                          ));
+                        },
+                        isLoading: _isLoadingCategories(context),
+                      ),
+                    ),
+                    customSpaces.horizontalspace10,
+                    Expanded(
+                      child: CategoryBox(
+                        categoryIcon: Icons.category_outlined,
+                        categoryName: 'Other',
+                        imagePath: 'assets/images/categories/other.jpg',
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                CategoriesScreen(category: 'Other'),
+                          ));
+                        },
+                        isLoading: _isLoadingCategories(context),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          customSpaces.verticalspace20,
           Padding(
             padding: customPaddings.horizontalpadding20,
             child: Row(
@@ -216,76 +294,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
 
           customSpaces.verticalspace20,
-          Padding(
-            padding: customPaddings.horizontalpadding20,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: CategoryBox(
-                        categoryName: 'House',
-                        imagePath: 'assets/images/categories/house.jpg',
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                CategoriesScreen(category: 'House'),
-                          ));
-                        },
-                        isLoading: _isLoadingCategories(context),
-                      ),
-                    ),
-                    customSpaces.horizontalspace10,
-                    Expanded(
-                      child: CategoryBox(
-                        categoryName: 'Apartment',
-                        imagePath: 'assets/images/categories/apartment.jpg',
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                CategoriesScreen(category: 'Apartment'),
-                          ));
-                        },
-                        isLoading: _isLoadingCategories(context),
-                      ),
-                    ),
-                  ],
-                ),
-                customSpaces.verticalspace10,
-                Row(
-                  children: [
-                    Expanded(
-                      child: CategoryBox(
-                        categoryName: 'Office',
-                        imagePath: 'assets/images/categories/office.jpg',
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                CategoriesScreen(category: 'Office'),
-                          ));
-                        },
-                        isLoading: _isLoadingCategories(context),
-                      ),
-                    ),
-                    customSpaces.horizontalspace10,
-                    Expanded(
-                      child: CategoryBox(
-                        categoryName: 'Other',
-                        imagePath: 'assets/images/categories/other.jpg',
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                CategoriesScreen(category: 'Other'),
-                          ));
-                        },
-                        isLoading: _isLoadingCategories(context),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
 
           // customSpaces.verticalspace20,
           //Three Boxes
@@ -312,7 +320,7 @@ class _HomeScreenState extends State<HomeScreen> {
           //     ],
           //   ),
           // ),
-          customSpaces.verticalspace20,
+
           Padding(
             padding: customPaddings.horizontalpadding20,
             child: Row(
@@ -468,10 +476,12 @@ class CategoryBox extends StatelessWidget {
   final String? imagePath;
   final VoidCallback? onTap;
   final bool isLoading;
+  final IconData? categoryIcon;
 
   const CategoryBox({
     Key? key,
     this.categoryName,
+    this.categoryIcon,
     this.imagePath,
     this.onTap,
     this.isLoading = false,
@@ -496,17 +506,32 @@ class CategoryBox extends StatelessWidget {
             child: Container(
               height: 50,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                image: DecorationImage(
-                  image: AssetImage(imagePath ?? 'assets/images/banner-1.jpg'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  categoryName ?? '',
-                  style: AppFonts.WhiteColorText14Bold,
-                ),
+                  borderRadius: BorderRadius.circular(4),
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey.shade300)
+                  // image: DecorationImage(
+                  //   image: AssetImage(imagePath ?? 'assets/images/banner-1.jpg'),
+                  //   fit: BoxFit.cover,
+                  // ),
+                  ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(
+                        categoryIcon,
+                        size: 24,
+                      ),
+                      customSpaces.horizontalspace20,
+                      Text(
+                        categoryName ?? '',
+                        style: AppFonts.SecondaryColorText14,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           );

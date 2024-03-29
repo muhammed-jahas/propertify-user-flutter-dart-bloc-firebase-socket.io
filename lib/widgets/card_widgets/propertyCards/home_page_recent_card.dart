@@ -48,8 +48,10 @@ class HomePageRecentCradSingle extends StatelessWidget {
                   tag: 'cover',
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
+                      bottomLeft: Radius.circular(12),
+                      bottomRight: Radius.circular(12),
                     ),
                     child: property?.propertyCoverPicture?.path != null
                         ? Image.network(
@@ -99,7 +101,7 @@ class HomePageRecentCradSingle extends StatelessWidget {
                       customSpaces.horizontalspace10,
                       Text(
                         property?.propertyName ?? '',
-                        style: AppFonts.SecondaryColorText24,
+                        style: AppFonts.SecondaryColorText18,
                       ),
                     ],
                   ),

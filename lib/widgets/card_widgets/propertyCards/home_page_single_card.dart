@@ -47,6 +47,8 @@ class HomePageCardSingle extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
+                    bottomLeft: Radius.circular(8),
+                    bottomRight: Radius.circular(8),
                   ),
                   child: property?.propertyCoverPicture?.path != null
                       ? Image.network(
@@ -95,7 +97,7 @@ class HomePageCardSingle extends StatelessWidget {
                       customSpaces.horizontalspace10,
                       Text(
                         property?.propertyName ?? '',
-                        style: AppFonts.SecondaryColorText18,
+                        style: AppFonts.SecondaryColorText14,
                       ),
                     ],
                   ),
